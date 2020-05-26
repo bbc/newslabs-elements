@@ -1,5 +1,5 @@
 @import "https://gel.files.bbci.co.uk/r2.511/bbc-reith.css";
-:root{
+:host{
   --nl-red: #b60000;
 }
 html{
