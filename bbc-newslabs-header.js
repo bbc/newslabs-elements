@@ -121,7 +121,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(user=>{
                 this.username=user.username
                 this.userinfo=user.name + '\n' + user.department + '\n' + user.email
-                this.user=user
+                this.setAttribute('user', JSON.stringify(user))
             })
             .catch(err=>{})
         }
@@ -170,6 +170,8 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
+
+    get user() { return JSON.parse(this.getAttribute('user')) }
 
     static get observedAttributes() { return [
         'app',
