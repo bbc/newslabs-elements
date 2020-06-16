@@ -119,9 +119,10 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(this.fetchError)
             .then(resp=>resp.json())
             .then(user=>{
-                console.log('/whoami/',user)
                 this.username=user.username
                 this.userinfo=user.name + '\n' + user.department + '\n' + user.email
+                bbc=bbc||{}
+                bbc.userinfo=user
             })
             .catch(err=>{})
         }
