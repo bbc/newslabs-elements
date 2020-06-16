@@ -106,6 +106,24 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 </div>
 </header>
 `
+        if (window.location.protocol=='https') {
+            fetch('/whoami/')
+            .then(this.fetchError)
+            .then(resp=>resp.json())
+            .then(user=>{
+                console.log('/whoami/',user)
+                this.username=user.username
+                this.userinfo=user.name + '&10;' + user.department + '&10;' + user.email
+            })
+            .catch(err=>{})
+        }
+    }
+
+    fetchError(resp) {
+        if (!resp.ok) {
+            throw Error(resp.statusText)
+        }
+        return resp
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
@@ -121,9 +139,11 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 const node=this.shadowRoot.getElementById(name)
                 if (typeof(node)!=="undefined") node.innerHTML=newvalue
             }
-            if (name=='username')
-            {
+            if (name=='username') {
                 this.shadowRoot.getElementById('userinfo').style.display='inline-block'
+            }
+            if (name=='userinfo') {
+                this.shadowRoot.getElementById('userinfo').title=newvalue
             }
         }
     }
@@ -136,6 +156,9 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 
     get username() { return this.getAttribute('username') }
     set username(v) { this.setAttribute('username', v) }
+
+    get userinfo() { return this.getAttribute('userinfo') }
+    set userinfo(v) { this.setAttribute('userinfo', v) }
 
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
