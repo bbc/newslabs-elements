@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>bbc-newslabs-header (newslabs-elements)</title>
+<style>
+body{
+    margin: 0px;
+    font-family: sans-serif;
+}
+h3,h5{
+    text-align: center;
+    color: #b60000;
+}
+h5{
+    margin-bottom: 4em;
+}
+hr{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    margin: 0px;
+}
+code{
+    background: #eeeeee;;
+    padding: 4px;
+    color: red;
+    border-radius: 4px;
+    border: 1px solid silver;
+}
+pre{
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid silver;
+    border-radius: 4px;
+    background: #d8d8d8;
+}
+</style>
+<script src="bbc-newslabs-header.js"></script>
+    </head>
+    <body>
+        <h3><code>&lt;bbc-newslabs-header&gt;&lt;/bbc-newslabs-header&gt;</code></h3>
+
+        <hr>
+        <bbc-newslabs-header></bbc-newslabs-header>
+        <h5>Basic, no attributes</h5>
+
+        <hr>
+        <bbc-newslabs-header app="Slicer AV"></bbc-newslabs-header>
+        <h5>With <code>app="Slicer AV"</code></h5>
+
+        <hr>
+        <bbc-newslabs-header app="FCP Tools" applink="https://bbcnewslabs.co.uk"></bbc-newslabs-header>
+        <h5>With <code>app="FCP Tools" applink="url"</code> (try a mouse-over FCP Tools and click)</h5>
+
+        <hr>
+        <bbc-newslabs-header subtitle="Hello world"></bbc-newslabs-header>
+        <h5>With <code>subtitle="Hello world"</code></h5>
+
+        <hr>
+        <bbc-newslabs-header username="Dave Bevan"></bbc-newslabs-header>
+        <h5>With <code>username="Dave Bevan"</code></h5>
+
+        <hr>
+        <bbc-newslabs-header app="News Labs Elements" applink="https://github.com/bbc/newslabs-elements" subtitle="W3C customElement demo" username="Dave Bevan"></bbc-newslabs-header>
+        <h5>All attributes used</h5>
+
+        <div style=padding:1em>
+        <h2>Javascript API</h2>
+        <pre>
+The element supports traditional getters and setters. Try these in your javascript console.
+
+const h=document.querySelectorAll('bbc-newslabs-header')[5];
+
+// getter example - valid for app, applink, subtitle, username
+h.app;
+
+// setter example - valid for app, applink, subtitle, username
+h.username="Tony Hall";
+</pre>
+        </div>
+    </body>
+</html>
