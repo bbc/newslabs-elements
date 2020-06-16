@@ -72,6 +72,14 @@ header[applink] #app:hover{
     vertical-align: top;
     padding-right: 12px;
 }
+@media screen and (max-width: 490px) {
+    #username{
+        display: none !important;
+    }
+    #userinfo svg{
+        margin-right: 0px;
+    }
+}
 </style>
 <header>
 <div class=blocks>
@@ -113,7 +121,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(user=>{
                 console.log('/whoami/',user)
                 this.username=user.username
-                this.userinfo=user.name + '&10;' + user.department + '&10;' + user.email
+                this.userinfo=user.name + '\n' + user.department + '\n' + user.email
             })
             .catch(err=>{})
         }
@@ -137,13 +145,15 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 this.shadowRoot.querySelector('header').setAttribute(name, name)
             } else {
                 const node=this.shadowRoot.getElementById(name)
-                if (typeof(node)!=="undefined") node.innerHTML=newvalue
+                if (name!='userinfo' && typeof(node)!=="undefined") node.innerHTML=newvalue
+                console.log('node',node,name)
             }
             if (name=='username') {
                 this.shadowRoot.getElementById('userinfo').style.display='inline-block'
             }
             if (name=='userinfo') {
-                this.shadowRoot.getElementById('userinfo').title=newvalue
+                console.log('set userinfo',newvalue)
+                this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
             }
         }
     }
@@ -168,5 +178,6 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
         'applink',
         'subtitle',
         'username',
+        'userinfo',
     ]}
 })
