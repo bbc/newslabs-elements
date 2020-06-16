@@ -63,6 +63,7 @@ header[applink] #app:hover{
     right: 0px;
     padding: 3px 14px;
     border-left: 1px solid silver;
+    background: whilte;
     display: none;
 }
 #userinfo svg{
