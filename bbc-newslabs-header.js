@@ -121,8 +121,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(user=>{
                 this.username=user.username
                 this.userinfo=user.name + '\n' + user.department + '\n' + user.email
-                bbc=bbc||{}
-                bbc.userinfo=user
+                this.user=user
             })
             .catch(err=>{})
         }
@@ -147,13 +146,11 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             } else {
                 const node=this.shadowRoot.getElementById(name)
                 if (name!='userinfo' && typeof(node)!=="undefined") node.innerHTML=newvalue
-                console.log('node',node,name)
             }
             if (name=='username') {
                 this.shadowRoot.getElementById('userinfo').style.display='inline-block'
             }
             if (name=='userinfo') {
-                console.log('set userinfo',newvalue)
                 this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
             }
         }
