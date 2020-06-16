@@ -31,7 +31,7 @@ div.blocks{
     border-right: 1px solid silver;
 }
 div.blocks svg{
-    width: 100%;
+    width: 105px;
     height: 20px;
     margin-top: 10px;
 }

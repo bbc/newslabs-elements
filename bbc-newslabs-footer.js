@@ -56,6 +56,11 @@ div.links{
     color: white;
     text-decoration: none;
 }
+@media screen and (max-width: 490px) {
+    .logo{
+        display: none !important;
+    }
+}
 </style>
 <footer>
 <div class=logo>
