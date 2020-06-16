@@ -77,7 +77,7 @@ header[applink] #app:hover{
         display: none !important;
     }
     #userinfo svg{
-        margin-right: 0px;
+        padding-right: 0px;
     }
 }
 </style>
