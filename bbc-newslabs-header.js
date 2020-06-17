@@ -154,9 +154,10 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 .then(this.fetchError)
                 .then(resp=>resp.json())
                 .then(json=>{
+                    window.bbc.userinfo.org=window.bbc.userinfo.org||{}
+                    if (json.retval.directorate) window.bbc.userinfo.org.directorate=json.retval.directorate
+                    if (json.retval.division) window.bbc.userinfo.org.division=json.retval.division
                     if (json.retval.building) window.bbc.userinfo.building=json.retval.building
-                    if (json.retval.directorate) window.bbc.userinfo.directorate=json.retval.directorate
-                    if (json.retval.division) window.bbc.userinfo.division=json.retval.division
                     if (json.retval.groups) window.bbc.userinfo.groups=json.retval.groups
                     if (json.retval.mobile) window.bbc.userinfo.mobile=json.retval.mobile
                     if (json.retval.phone) window.bbc.userinfo.phone=json.retval.phone
