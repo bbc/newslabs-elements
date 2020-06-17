@@ -114,6 +114,34 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 </div>
 </header>
 `
+        window.bbc=window.bbc||{}
+        bbc.onReith=function(onReithCB, offReithCB)
+        {
+            if (typeof(onReithCB)!=='function') {
+                console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
+                return
+            }
+            let xhr=new XMLHttpRequest()
+            let check='https://insight.newslabs.co/onReith/'
+            xhr.timeout=5000
+            xhr.open('HEAD', check, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState===4) {
+                    if (xhr.status !==200) {
+                        console.log('bbc.onReith: false')
+                        if (typeof(offReithCB)==='function') {
+                            offReithCB()
+                        }
+                    }
+                    if (xhr.status===200) {
+                        console.log('bbc.onReith: true')
+                        onReithCB()
+                    }
+                }
+            }
+            xhr.send()
+        }
+
         if (window.location.protocol=='https:') {
             fetch('/whoami/')
             .then(this.fetchError)
@@ -121,47 +149,20 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(user=>{
                 this.userid=user.userid
                 this.userinfo=user.displayname + '\n' + user.department + '\n' + user.mail
-                window.bbc=window.bbc||{}
-                bbc.userinfo=user
-                bbc.whoami=function(onResponseCB)
-                {
-                    if (typeof(onResponseCB)!=='function') {
-                        console.log('Usage: bbc.whoami(fn)')
-                        return
-                    }
-                    fetch('/generic-apis/whois/'+bbc.userinfo.userid)
-                    .then(this.fetchError)
-                    .then(resp=>resp.json())
-                    .then(json=>{
-                        onResponseCB(json)
-                    })
-                }
-                bbc.onReith=function(onReithCB, offReithCB)
-                {
-                    if (typeof(onReithCB)!=='function') {
-                        console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
-                        return
-                    }
-                    let xhr=new XMLHttpRequest()
-                    let check='https://insight.newslabs.co/onReith/'
-                    xhr.timeout=5000
-                    xhr.open('HEAD', check, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState===4) {
-                            if (xhr.status !==200) {
-                                console.log('bbc.onReith: false')
-                                if (typeof(offReithCB)==='function') {
-                                    offReithCB()
-                                }
-                            }
-                            if (xhr.status===200) {
-                                console.log('bbc.onReith: true')
-                                onReithCB()
-                            }
-                        }
-                    }
-                    xhr.send()
-                }
+                window.bbc.userinfo=user
+                fetch('/generic-apis/whois/'+user.userid)
+                .then(this.fetchError)
+                .then(resp=>resp.json())
+                .then(json=>{
+                    if (json.retval.building) window.bbc.userinfo.building=json.retval.building
+                    if (json.retval.directorate) window.bbc.userinfo.directorate=json.retval.directorate
+                    if (json.retval.division) window.bbc.userinfo.division=json.retval.division
+                    if (json.retval.groups) window.bbc.userinfo.groups=json.retval.groups
+                    if (json.retval.mobile) window.bbc.userinfo.mobile=json.retval.mobile
+                    if (json.retval.phone) window.bbc.userinfo.phone=json.retval.phone
+                    if (json.retval.room) window.bbc.userinfo.room=json.retval.room
+                    if (json.retval.title) window.bbc.userinfo.title=json.retval.title
+                })
             })
             .catch(err=>{})
         }
