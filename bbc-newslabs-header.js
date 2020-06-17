@@ -121,7 +121,8 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(user=>{
                 this.username=user.username
                 this.userinfo=user.name + '\n' + user.department + '\n' + user.email
-                this.setAttribute('user', JSON.stringify(user))
+                window.bbc=window.bbc||{}
+                bbc.userinfo=user
             })
             .catch(err=>{})
         }
