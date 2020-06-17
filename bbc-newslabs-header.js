@@ -73,7 +73,7 @@ header[applink] #app:hover{
     padding-right: 12px;
 }
 @media screen and (max-width: 490px) {
-    #username{
+    #userid{
         display: none !important;
     }
     #userinfo svg{
@@ -110,7 +110,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 <div id="userinfo">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
     <circle cx="16" cy="16" r="6.1"></circle><path d="M16 0a16 16 0 0 0 0 32 16.1 16.1 0 0 0 8.6-2.7L22.1 24H9.9l-1.6 3.5A13.8 13.8 0 0 1 2 15.9a14 14 0 1 1 23.9 10l.9 1.9A16 16 0 0 0 16 0z"></path>
-</svg><span id="username"></span>
+</svg><span id="userid"></span>
 </div>
 </header>
 `
@@ -119,8 +119,8 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             .then(this.fetchError)
             .then(resp=>resp.json())
             .then(user=>{
-                this.username=user.username
-                this.userinfo=user.name + '\n' + user.department + '\n' + user.email
+                this.userid=user.userid
+                this.userinfo=user.displayname + '\n' + user.department + '\n' + user.mail
                 window.bbc=window.bbc||{}
                 bbc.userinfo=user
                 bbc.onReith=function(onReithCB, offReithCB)
@@ -174,7 +174,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 const node=this.shadowRoot.getElementById(name)
                 if (name!='userinfo' && typeof(node)!=="undefined") node.innerHTML=newvalue
             }
-            if (name=='username') {
+            if (name=='userid') {
                 this.shadowRoot.getElementById('userinfo').style.display='inline-block'
             }
             if (name=='userinfo') {
@@ -189,8 +189,8 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
     get applink() { return this.getAttribute('applink') }
     set applink(v) { this.setAttribute('applink', v) }
 
-    get username() { return this.getAttribute('username') }
-    set username(v) { this.setAttribute('username', v) }
+    get userid() { return this.getAttribute('userid') }
+    set userid(v) { this.setAttribute('userid', v) }
 
     get userinfo() { return this.getAttribute('userinfo') }
     set userinfo(v) { this.setAttribute('userinfo', v) }
@@ -202,7 +202,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
         'app',
         'applink',
         'subtitle',
-        'username',
+        'userid',
         'userinfo',
     ]}
 })
