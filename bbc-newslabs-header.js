@@ -123,6 +123,32 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 this.userinfo=user.name + '\n' + user.department + '\n' + user.email
                 window.bbc=window.bbc||{}
                 bbc.userinfo=user
+                bbc.onReith=function(onReithCB, offReithCB)
+                {
+                    if (typeof(onReithCB)!=='function') {
+                        console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
+                        return
+                    }
+                    let xhr=new XMLHttpRequest()
+                    let check='https://insight.newslabs.co/onReith/'
+                    xhr.timeout=5000
+                    xhr.open('HEAD', check, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState===4) {
+                            if (xhr.status !==200) {
+                                console.log('bbc.onReith: false')
+                                if (typeof(offReithCB)==='function') {
+                                    offReithCB()
+                                }
+                            }
+                            if (xhr.status===200) {
+                                console.log('bbc.onReith: true')
+                                onReithCB()
+                            }
+                        }
+                    }
+                    xhr.send()
+                }
             })
             .catch(err=>{})
         }
