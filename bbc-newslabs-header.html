@@ -50,18 +50,18 @@ pre{
 
         <hr>
         <bbc-newslabs-header app="FCP Tools" applink="https://bbcnewslabs.co.uk"></bbc-newslabs-header>
-        <h5>With <code>app="FCP Tools" applink="url"</code> (try a mouse-over FCP Tools and click)</h5>
+        <h5>With <code>app="FCP Tools" applink="https://bbcnewslabs.co.uk"</code> (try a mouse-over FCP Tools and click)</h5>
 
         <hr>
         <bbc-newslabs-header subtitle="Hello world"></bbc-newslabs-header>
         <h5>With <code>subtitle="Hello world"</code></h5>
 
         <hr>
-        <bbc-newslabs-header username="Dave Bevan"></bbc-newslabs-header>
-        <h5>With <code>username="Dave Bevan"</code></h5>
+        <bbc-newslabs-header userinfo='Tony Hall' userid="hallt81"></bbc-newslabs-header>
+        <h5>With <code>userinfo="Tony Hall" userid="hallt81"</code></h5>
 
         <hr>
-        <bbc-newslabs-header app="News Labs Elements" applink="https://github.com/bbc/newslabs-elements" subtitle="W3C customElement demo" username="Dave Bevan"></bbc-newslabs-header>
+        <bbc-newslabs-header app="News Labs Elements" applink="https://github.com/bbc/newslabs-elements" subtitle="W3C customElement demo" userinfo="Tony Hall" userid="hallt81"></bbc-newslabs-header>
         <h5>All attributes used</h5>
 
         <div style=padding:1em>
@@ -71,11 +71,13 @@ The element supports traditional getters and setters. Try these in your javascri
 
 const h=document.querySelectorAll('bbc-newslabs-header')[5];
 
-// getter example - valid for app, applink, subtitle, username
+// getter example - valid for app, applink, subtitle, userid, userinfo
 h.app;
 
-// setter example - valid for app, applink, subtitle, username
-h.username="Tony Hall";
+// setter example - valid for app, applink, subtitle, userid, userinfo
+h.userid="bernim01";
+h.userinfo="Miles Bernie";
+h.subtitle="Documentation";
 </pre>
         </div>
     </body>
