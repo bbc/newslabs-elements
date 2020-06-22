@@ -9,6 +9,10 @@ customElements.define(
         this.shadowRoot.innerHTML=`
 <style>
 @import "https://bbc.github.io/newslabs-elements/core.css";
+:host(bbc-newslabs-footer) {
+    position: fixed;
+    width: 100px;
+}
 header{
     border-bottom: 1px solid silver;
     height: 40px;
