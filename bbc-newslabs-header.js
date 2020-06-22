@@ -9,7 +9,7 @@ customElements.define(
         this.shadowRoot.innerHTML=`
 <style>
 @import "https://bbc.github.io/newslabs-elements/core.css";
-:host(bbc-newslabs-footer) {
+:host(bbc-newslabs-header) {
     position: fixed;
     width: 100px;
 }
