@@ -160,7 +160,6 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 .then(this.fetchError)
                 .then(resp=>resp.json())
                 .then(json=>{
-                    console.log('whoami.json',json)
                     window.bbc.userinfo.org=window.bbc.userinfo.org||{}
                     let h=window.document.querySelector('bbc-newslabs-header')
                     h.userid=json.retval.userid
