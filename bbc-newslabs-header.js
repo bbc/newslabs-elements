@@ -11,7 +11,8 @@ customElements.define(
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
     position: fixed;
-    width: 100px;
+    width: 100vw;
+    top: 0px;
 }
 header{
     border-bottom: 1px solid silver;
@@ -146,11 +147,13 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             xhr.send()
         }
 
-        if (window.location.protocol=='https:') {
+        //if (window.location.protocol=='https:') {
+        if (true) {
             fetch('/whoami/')
             .then(this.fetchError)
             .then(resp=>resp.json())
             .then(user=>{
+                console.log('whoami.user',user)
                 this.userid=user.userid
                 this.userinfo=user.displayname + '\n' + user.department + '\n' + user.mail
                 window.bbc.userinfo=user
@@ -158,9 +161,11 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
                 .then(this.fetchError)
                 .then(resp=>resp.json())
                 .then(json=>{
+                    console.log('whoami.json',json)
                     window.bbc.userinfo.org=window.bbc.userinfo.org||{}
-                    this.userid=json.retval.userid
-                    this.userinfo=json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+                    let h=window.document.querySelector('bbc-newslabs-header')
+                    h.userid=json.retval.userid
+                    h.userinfo=json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
                     if (json.retval.directorate) window.bbc.userinfo.org.directorate=json.retval.directorate
                     if (json.retval.building) window.bbc.userinfo.org.building=json.retval.building
                     if (json.retval.room) window.bbc.userinfo.org.room=json.retval.room

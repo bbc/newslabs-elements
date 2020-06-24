@@ -11,7 +11,7 @@ customElements.define(
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-footer) {
     position: fixed;
-    width: 100px;
+    width: 100vw;
     bottom: 0px;
 }
 footer{
