@@ -4,10 +4,6 @@
         <meta charset="utf-8">
         <title>bbc-newslabs-header (newslabs-elements)</title>
 <style>
-body{
-    margin: 0px;
-    font-family: sans-serif;
-}
 h3,h5{
     text-align: center;
     color: #b60000;
@@ -38,30 +34,32 @@ pre{
 <script src="bbc-newslabs-header.js"></script>
     </head>
     <body>
-        <h3><code>&lt;bbc-newslabs-header&gt;&lt;/bbc-newslabs-header&gt;</code></h3>
+        <bbc-newslabs-header applink="./" app="News Labs Elements" subtitle="Header element"></bbc-newslabs-header>
+
+        <h3 style=padding-top:4em><code>&lt;bbc-newslabs-header&gt;&lt;/bbc-newslabs-header&gt;</code></h3>
 
         <hr>
-        <bbc-newslabs-header></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative></bbc-newslabs-header>
         <h5>Basic, no attributes</h5>
 
         <hr>
-        <bbc-newslabs-header app="Slicer AV"></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative app="Slicer AV"></bbc-newslabs-header>
         <h5>With <code>app="Slicer AV"</code></h5>
 
         <hr>
-        <bbc-newslabs-header app="FCP Tools" applink="https://bbcnewslabs.co.uk"></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative app="FCP Tools" applink="https://bbcnewslabs.co.uk"></bbc-newslabs-header>
         <h5>With <code>app="FCP Tools" applink="https://bbcnewslabs.co.uk"</code> (try a mouse-over FCP Tools and click)</h5>
 
         <hr>
-        <bbc-newslabs-header subtitle="Hello world"></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative subtitle="Hello world"></bbc-newslabs-header>
         <h5>With <code>subtitle="Hello world"</code></h5>
 
         <hr>
-        <bbc-newslabs-header userinfo='Tony Hall' userid="hallt81"></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative userinfo='Tony Hall' userid="hallt81"></bbc-newslabs-header>
         <h5>With <code>userinfo="Tony Hall" userid="hallt81"</code></h5>
 
         <hr>
-        <bbc-newslabs-header app="News Labs Elements" applink="https://github.com/bbc/newslabs-elements" subtitle="W3C customElement demo" userinfo="Tony Hall" userid="hallt81"></bbc-newslabs-header>
+        <bbc-newslabs-header style=position:relative app="News Labs Elements" applink="https://github.com/bbc/newslabs-elements" subtitle="W3C Custom Element demo" userinfo="Tony Hall" userid="hallt81"></bbc-newslabs-header>
         <h5>All attributes used</h5>
 
         <div style=padding:1em>

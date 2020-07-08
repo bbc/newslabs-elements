@@ -167,5 +167,13 @@
   --nl-red: #b60000;
 }
 html{
-  font-family: "Reith";
+  font-family: "ReithSans";
+}
+body{
+    margin: 0;
+}
+main{
+    margin-top: 51px;
+    padding: 1em;
+    margin-bottom: 41px;
 }

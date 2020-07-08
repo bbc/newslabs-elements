@@ -1,3 +1,30 @@
+(function(){
+    // add selected core files to all pages
+    let filesToAdd=[
+        'https://bbc.github.io/newslabs-elements/core.css',
+    ]
+    filesToAdd.forEach(url=>{
+        let n=-1
+        let x=url.split('.')
+        let ext=x[x.length-1]
+        if (ext=='css') n=document.querySelectorAll('head link[href*="' + url + '"]').length
+        if (ext=='js') n=document.querySelectorAll('head script[src*="' + url + '"]').length
+        if (n==0) {
+            let e=null
+            if (ext=='css') {
+                e=document.createElement('link')
+                e.rel='stylesheet'
+                e.href=url
+            }
+            if (ext=='js') {
+                e=document.CreateElement('script')
+                e.src=url
+            }
+            if (e!=null) document.querySelector('head').appendChild(e)
+        }
+    })
+})()
+
 customElements.define(
     'bbc-newslabs-header',
     class extends HTMLElement
@@ -11,7 +38,7 @@ customElements.define(
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
     position: fixed;
-    width: 100vw;
+    width: 100%;
     top: 0px;
 }
 header{
@@ -19,7 +46,7 @@ header{
     height: 40px;
     overflow: hidden;
     font-size: 20px;
-    font-family: "Reith Sans";
+    font-family: "ReithSans";
     background: white;
     color: #404040;
     position: relative;
@@ -55,7 +82,7 @@ header[applink] #app:hover{
     color: white;
 }
 #subtitle{
-    font-weight: 100;
+    font-weight: 400;
     vertical-align: top;
     padding: 3px 14px;
     font-size: 18px;
