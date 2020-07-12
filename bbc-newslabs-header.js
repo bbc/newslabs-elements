@@ -174,8 +174,7 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
             xhr.send()
         }
 
-        //if (window.location.protocol=='https:') {
-        if (true) {
+        if (window.location.protocol=='https:') {
             fetch('/whoami/')
             .then(this.fetchError)
             .then(resp=>resp.json())
