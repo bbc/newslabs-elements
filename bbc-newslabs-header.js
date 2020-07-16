@@ -77,9 +77,8 @@ div.blocks svg{
     display: none;
 }
 header[applink] #app:hover{
-    background: var(--nl-red);
+    background: linear-gradient(0deg, var(--nl-red) 8px, transparent 0px);
     cursor: pointer;
-    color: white;
 }
 #subtitle{
     font-weight: 400;
