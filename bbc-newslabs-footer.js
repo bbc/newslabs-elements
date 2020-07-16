@@ -20,7 +20,7 @@ footer{
     height: 44px;
     overflow: hidden;
     font-size: 20px;
-    font-family: "Reith Sans";
+    font-family: "ReithSans";
     background: var(--nl-red);
     margin-top: 1em;
     color: white;
