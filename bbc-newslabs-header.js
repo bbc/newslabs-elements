@@ -63,6 +63,7 @@ div.blocks{
     border-right: 1px solid silver;
 }
 div.blocks svg{
+    margin-left: 12px;
     margin-top: 10px;
 }
 #app{
