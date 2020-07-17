@@ -63,8 +63,6 @@ div.blocks{
     border-right: 1px solid silver;
 }
 div.blocks svg{
-    width: 105px;
-    height: 20px;
     margin-top: 10px;
 }
 #app{
@@ -115,8 +113,8 @@ header[applink] #app:hover{
 <header>
 <div class=blocks>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1000px"
-	 height="285.013px" viewBox="-400 -67.353 1000 285.013" enable-background="new -400 -67.353 1000 285.013" xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 height="20px" viewBox="-400 -67.353 1000 285.013" enable-background="new -400 -67.353 1000 285.013" xml:space="preserve">
 <rect style="opacity:1;fill:white;fill-opacity:1;stroke:#3757c4;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
 id="rect835" width="176.7767" height="224.98853" x="-336.66287" y="-37.579075" />
 <rect style="opacity:1;fill:white;fill-opacity:1;stroke:#3757c4;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
