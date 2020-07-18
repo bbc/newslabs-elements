@@ -1,14 +1,15 @@
-window.bbc = window.bbc || {}
-
-// Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
-bbc.addDependentScripts = async function( scriptsToAdd ) {
-    for ( var i = 0; i < scriptsToAdd.length; i++ ) {
-        let r = await fetch( scriptsToAdd[i] )
-        eval ( await r.text() )
-    }
-}
-
 (function(){
+
+    //window.bbc = window.bbc || {}
+
+    // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
+    //bbc.addDependentScripts = async function( scriptsToAdd ) {
+    //for ( var i = 0; i < scriptsToAdd.length; i++ ) {
+    //let r = await fetch( scriptsToAdd[i] )
+    //eval ( await r.text() )
+    //}
+    //}
+
     // add selected core files to all pages
     let filesToAdd=[]
 
@@ -46,7 +47,7 @@ bbc.addDependentScripts = async function( scriptsToAdd ) {
         }
     })
 
-    bbc.addDependentScripts(jsToAdd)
+    //bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
