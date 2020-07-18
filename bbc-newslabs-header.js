@@ -5,7 +5,7 @@
     // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
     if (document.querySelector('html').classList.contains('newslabs-bootstrap'))
     {
-        filesToadd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
+        filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
     }
 
     // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
