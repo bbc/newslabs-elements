@@ -163,6 +163,9 @@
   src: url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff2") format("woff2"),
   url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff") format("woff");
 }
+:root{
+  --nl-red: #b60000;
+}
 :host{
   --nl-red: #b60000;
 }
@@ -176,4 +179,18 @@ main{
     margin-top: 51px;
     padding: 1em;
     margin-bottom: 41px;
+}
+
+/* these need <html class=newslabs-bootstrap> to activate them */
+.newslabs-bootstrap .btn {
+    padding: 0.375rem .75rem 0.175em;
+}
+.newslabs-bootstrap .btn-outline-primary {
+    color: var(--nl-red);
+    border-color: var(--nl-red);
+}
+.newslabs-bootstrap .btn-outline-primary:hover {
+    color: #fff;
+    background-color: var(--nl-red);
+    border-color: var(--nl-red);
 }
