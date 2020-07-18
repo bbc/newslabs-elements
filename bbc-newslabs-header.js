@@ -6,6 +6,8 @@
     if (document.querySelector('html').classList.contains('newslabs-bootstrap'))
     {
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
+        filesToAdd.push('https://code.jquery.com/jquery-3.5.1.slim.min.js')
+        filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
     }
 
     // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
