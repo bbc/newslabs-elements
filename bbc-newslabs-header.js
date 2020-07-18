@@ -27,7 +27,7 @@
                 e.href=url
             }
             if (ext=='js') {
-                e=document.CreateElement('script')
+                e=document.createElement('script')
                 e.src=url
             }
             if (e!=null) document.querySelector('head').appendChild(e)
