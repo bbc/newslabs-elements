@@ -48,7 +48,7 @@
         }
     })
 
-    //bbc.addDependentScripts(jsToAdd)
+    bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
