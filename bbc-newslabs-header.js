@@ -1,8 +1,19 @@
+window.bbc = window.bbc || {}
+
+// Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
+bbc.addDependentScripts = async function( scriptsToAdd ) {
+    for ( var i = 0; i < scriptsToAdd.length; i++ ) {
+        let r = await fetch( scriptsToAdd[i] )
+        eval ( await r.text() )
+    }
+}
+
 (function(){
     // add selected core files to all pages
     let filesToAdd=[]
 
     // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
+    // Here, order is important as BS depends on JQ
     if (document.querySelector('html').classList.contains('newslabs-bootstrap'))
     {
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
@@ -13,26 +24,29 @@
     // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
     filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
 
+    let jsToAdd=[]
+
     filesToAdd.forEach(url=>{
         let n=-1
         let x=url.split('.')
         let ext=x[x.length-1]
-        if (ext=='css') n=document.querySelectorAll('head link[href*="' + url + '"]').length
-        if (ext=='js') n=document.querySelectorAll('head script[src*="' + url + '"]').length
+        if (ext=='css') n=document.querySelectorAll('link[href*="' + url + '"]').length
+        if (ext=='js') n=document.querySelectorAll('script[src*="' + url + '"]').length
         if (n==0) {
             let e=null
             if (ext=='css') {
                 e=document.createElement('link')
                 e.rel='stylesheet'
                 e.href=url
+                document.querySelector('head').appendChild(e)
             }
             if (ext=='js') {
-                e=document.createElement('script')
-                e.src=url
+                jsToAdd.push(url)
             }
-            if (e!=null) document.querySelector('head').appendChild(e)
         }
     })
+
+    bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
