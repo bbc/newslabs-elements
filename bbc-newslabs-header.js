@@ -1,8 +1,16 @@
 (function(){
     // add selected core files to all pages
-    let filesToAdd=[
-        'https://bbc.github.io/newslabs-elements/core.css',
-    ]
+    let filesToAdd=[]
+
+    // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
+    if (document.querySelector('html').classList.contains('newslabs-bootstrap'))
+    {
+        filesToadd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
+    }
+
+    // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
+    filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
+
     filesToAdd.forEach(url=>{
         let n=-1
         let x=url.split('.')
