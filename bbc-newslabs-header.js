@@ -116,8 +116,12 @@ div.outer{
     font-size: 20px;
     color: #404040;
 }
+div.outer div{
+    white-space: nowrap;
+}
 #blocks{
     width: 94px;
+    min-width: 94px;
     text-align: center;
     border-right: 1px solid silver;
     position: relative;
@@ -131,6 +135,7 @@ div.outer{
     padding: 0px 12px;
     border-right: 1px solid silver;
     font-weight: bold;
+    overflow: hidden;
 }
 #app:empty{
     display: none;
@@ -144,6 +149,7 @@ div.outer[applink] #app:hover{
     flex-grow: 1;
     font-size: 18px;
     font-weight: 400;
+    overflow: hidden;
 }
 #userinfo{
     font-size: 15px;
