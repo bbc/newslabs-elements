@@ -8,6 +8,7 @@ customElements.define(
         this.attachShadow({mode:'open'});
         this.shadowRoot.innerHTML=`
 <style>
+@import "https://bbc.github.io/newslabs-elements/reset.css";
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-footer) {
     position: fixed;
