@@ -1,14 +1,51 @@
 (function(){
 
-    // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
+    // Mobile friendly page
+    if (document.querySelectorAll('meta[name=viewport i]').length == 0) {
+        const m=document.createElement('meta')
+        m.name='viewport'
+        m.content='width=device-width, initial-scale=1'
+        document.querySelector('head').appendChild(m)
+    }
+
     window.bbc = window.bbc || {}
-    bbc.addDependentScripts = async function( scriptsToAdd ) {
-        const s=document.createElement('script')
+
+    // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
+    window.bbc.addDependentScripts = async function( scriptsToAdd ) {
+        const s=window.document.createElement('script')
         for ( var i = 0; i < scriptsToAdd.length; i++ ) {
             let r = await fetch( scriptsToAdd[i] )
             s.text += await r.text()
         }
-        document.querySelector('body').appendChild(s)
+        window.document.querySelector('body').appendChild(s)
+    }
+
+    // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
+    window.bbc.onReith=function(onReithCB, offReithCB)
+    {
+        if (typeof(onReithCB)!=='function') {
+            console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
+            return
+        }
+        let xhr=new XMLHttpRequest()
+        let check='https://insight.newslabs.co/onReith/'
+        xhr.timeout=5000
+        xhr.open('HEAD', check, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState===4) {
+                if (xhr.status !==200) {
+                    console.log('bbc.onReith: false')
+                    if (typeof(offReithCB)==='function') {
+                        offReithCB()
+                    }
+                }
+                if (xhr.status===200) {
+                    console.log('bbc.onReith: true')
+                    onReithCB()
+                }
+            }
+        }
+        xhr.send()
     }
 
     // add selected core files to all pages
@@ -48,7 +85,7 @@
         }
     })
 
-    bbc.addDependentScripts(jsToAdd)
+    window.bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
@@ -170,34 +207,6 @@ id="rect839" width="209.86325" height="221.2072" x="335.46667" y="-34.743092" />
 </div>
 </header>
 `
-        window.bbc=window.bbc||{}
-        bbc.onReith=function(onReithCB, offReithCB)
-        {
-            if (typeof(onReithCB)!=='function') {
-                console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
-                return
-            }
-            let xhr=new XMLHttpRequest()
-            let check='https://insight.newslabs.co/onReith/'
-            xhr.timeout=5000
-            xhr.open('HEAD', check, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState===4) {
-                    if (xhr.status !==200) {
-                        console.log('bbc.onReith: false')
-                        if (typeof(offReithCB)==='function') {
-                            offReithCB()
-                        }
-                    }
-                    if (xhr.status===200) {
-                        console.log('bbc.onReith: true')
-                        onReithCB()
-                    }
-                }
-            }
-            xhr.send()
-        }
-
         if (window.location.protocol=='https:') {
             fetch('/whoami/')
             .then(this.fetchError)
