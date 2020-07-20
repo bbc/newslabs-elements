@@ -11,17 +11,17 @@
     window.bbc = window.bbc || {}
 
     // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
-    window.bbc.addDependentScripts = async function( scriptsToAdd ) {
-        const s=window.document.createElement('script')
+    bbc.addDependentScripts = async function( scriptsToAdd ) {
+        const s=document.createElement('script')
         for ( var i = 0; i < scriptsToAdd.length; i++ ) {
             let r = await fetch( scriptsToAdd[i] )
             s.text += await r.text()
         }
-        window.document.querySelector('body').appendChild(s)
+        document.querySelector('head').appendChild(s)
     }
 
     // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
-    window.bbc.onReith=function(onReithCB, offReithCB)
+    bbc.onReith=function(onReithCB, offReithCB)
     {
         if (typeof(onReithCB)!=='function') {
             console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
@@ -85,7 +85,7 @@
         }
     })
 
-    window.bbc.addDependentScripts(jsToAdd)
+    bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
