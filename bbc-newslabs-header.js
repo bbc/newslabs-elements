@@ -110,7 +110,7 @@ customElements.define(
 div.outer{
     display: flex;
     height: 40px;
-    line-height: 45px;
+    line-height: 40px;
     border-bottom: 1px solid silver;
     background: #fff;
     font-size: 20px;
@@ -159,7 +159,6 @@ div.outer[applink] #app:hover{
     display: none;
 }
 #userinfo svg{
-    width: 20px;
     padding-top: 4px;
     vertical-align: top;
     padding-right: 12px;
