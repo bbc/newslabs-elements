@@ -100,7 +100,6 @@ customElements.define(
         this.attachShadow({mode:'open'});
         this.shadowRoot.innerHTML=`
 <style>
-@import "https://bbc.github.io/newslabs-elements/reset.css";
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
     position: fixed;
@@ -154,14 +153,14 @@ div.outer[applink] #app:hover{
 #userinfo{
     font-size: 15px;
     font-weight: 100;
-    padding: 0px 12px;
+    padding: 0px 10px;
     border-left: 1px solid silver;
     display: none;
 }
 #userinfo svg{
-    padding-top: 4px;
+    margin-top: 10px;
     vertical-align: top;
-    padding-right: 12px;
+    margin-right: 10px;
 }
 @media screen and (max-width: 490px) {
     #userid{
@@ -200,7 +199,7 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 <div id=app class=inner></div>
 <div id=subtitle class=inner></div>
 <div id=userinfo class=inner>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="20px" viewBox="0 0 32 32" xml:space="preserve">
 <circle cx="16" cy="16" r="6.1"></circle><path d="M16 0a16 16 0 0 0 0 32 16.1 16.1 0 0 0 8.6-2.7L22.1 24H9.9l-1.6 3.5A13.8 13.8 0 0 1 2 15.9a14 14 0 1 1 23.9 10l.9 1.9A16 16 0 0 0 16 0z"></path>
 </svg><span id="userid"></span>
 </div>

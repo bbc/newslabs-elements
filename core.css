@@ -1,3 +1,31 @@
+:root, :host{
+  --nl-red: #b80000;
+}
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  font-family: "ReithSans" !important;
+}
+ol, ul {
+  list-style: none;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+main{
+    margin-top: 51px;
+    padding: 1em;
+    margin-bottom: 41px;
+}
 @font-face {
   font-display: swap;
   font-family: "ReithSans";
@@ -163,19 +191,6 @@
   src: url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff2") format("woff2"),
   url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff") format("woff");
 }
-:root, :host{
-  --nl-red: #b80000;
-}
-body{
-    margin: 0;
-    font-family: "ReithSans" !important;
-}
-main{
-    margin-top: 51px;
-    padding: 1em;
-    margin-bottom: 41px;
-}
-
 /* these need <html class=newslabs-bootstrap> to activate them */
 .newslabs-bootstrap .btn {
     padding: 0.375rem .75rem 0.175em;
