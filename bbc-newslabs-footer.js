@@ -13,6 +13,7 @@ customElements.define(
     position: fixed;
     width: 100vw;
     bottom: 0px;
+    z-index: 999999;
 }
 footer{
     width: 100%;

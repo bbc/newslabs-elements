@@ -105,6 +105,7 @@ customElements.define(
     position: fixed;
     width: 100%;
     top: 0px;
+    z-index: 999999;
 }
 div.outer{
     display: flex;
