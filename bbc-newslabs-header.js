@@ -29,7 +29,7 @@
             return
         }
         let xhr = new XMLHttpRequest()
-        let check = 'https://email.national.core.bbc.co.uk/'
+        let check = 'https://onreith.labs.jupiter.bbc.co.uk/'
         xhr.timeout = 5000
         xhr.open('HEAD', check, true);
         xhr.onreadystatechange = function () {
