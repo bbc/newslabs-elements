@@ -1,47 +1,46 @@
-(function(){
+(function () {
 
     // Mobile friendly page
     if (document.querySelectorAll('meta[name=viewport i]').length == 0) {
-        const m=document.createElement('meta')
-        m.name='viewport'
-        m.content='width=device-width, initial-scale=1'
+        const m = document.createElement('meta')
+        m.name = 'viewport'
+        m.content = 'width=device-width, initial-scale=1'
         document.querySelector('head').appendChild(m)
     }
 
     window.bbc = window.bbc || {}
 
     // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
-    bbc.addDependentScripts = async function( scriptsToAdd ) {
-        const s=document.createElement('script')
-        for ( var i = 0; i < scriptsToAdd.length; i++ ) {
-            let r = await fetch( scriptsToAdd[i] )
+    bbc.addDependentScripts = async function (scriptsToAdd) {
+        const s = document.createElement('script')
+        for (var i = 0; i < scriptsToAdd.length; i++) {
+            let r = await fetch(scriptsToAdd[i])
             s.text += await r.text()
         }
-        window.addEventListener('load', function(event) {
+        window.addEventListener('load', function (event) {
             document.querySelector('body').appendChild(s)
         })
     }
 
     // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
-    bbc.onReith=function(onReithCB, offReithCB)
-    {
-        if (typeof(onReithCB)!=='function') {
+    bbc.onReith = function (onReithCB, offReithCB) {
+        if (typeof (onReithCB) !== 'function') {
             console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
             return
         }
-        let xhr=new XMLHttpRequest()
-        let check='https://email.national.core.bbc.co.uk/'
-        xhr.timeout=5000
+        let xhr = new XMLHttpRequest()
+        let check = 'https://email.national.core.bbc.co.uk/'
+        xhr.timeout = 5000
         xhr.open('HEAD', check, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState===4) {
-                if (xhr.status !==200) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status !== 200) {
                     console.log('bbc.onReith: false')
-                    if (typeof(offReithCB)==='function') {
+                    if (typeof (offReithCB) === 'function') {
                         offReithCB()
                     }
                 }
-                if (xhr.status===200) {
+                if (xhr.status === 200) {
                     console.log('bbc.onReith: true')
                     onReithCB()
                 }
@@ -51,12 +50,11 @@
     }
 
     // add selected core files to all pages
-    let filesToAdd=[]
+    let filesToAdd = []
 
     // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
     // Here, order is important as BS depends on JQ
-    if (document.querySelector('html').classList.contains('newslabs-bootstrap'))
-    {
+    if (document.querySelector('html').classList.contains('newslabs-bootstrap')) {
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
         filesToAdd.push('https://code.jquery.com/jquery-3.5.1.slim.min.js')
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
@@ -65,23 +63,23 @@
     // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
     filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
 
-    let jsToAdd=[]
+    let jsToAdd = []
 
-    filesToAdd.forEach(url=>{
-        let n=-1
-        let x=url.split('.')
-        let ext=x[x.length-1]
-        if (ext=='css') n=document.querySelectorAll('link[href*="' + url + '"]').length
-        if (ext=='js') n=document.querySelectorAll('script[src*="' + url + '"]').length
-        if (n==0) {
-            let e=null
-            if (ext=='css') {
-                e=document.createElement('link')
-                e.rel='stylesheet'
-                e.href=url
+    filesToAdd.forEach(url => {
+        let n = -1
+        let x = url.split('.')
+        let ext = x[x.length - 1]
+        if (ext == 'css') n = document.querySelectorAll('link[href*="' + url + '"]').length
+        if (ext == 'js') n = document.querySelectorAll('script[src*="' + url + '"]').length
+        if (n == 0) {
+            let e = null
+            if (ext == 'css') {
+                e = document.createElement('link')
+                e.rel = 'stylesheet'
+                e.href = url
                 document.querySelector('head').appendChild(e)
             }
-            if (ext=='js') {
+            if (ext == 'js') {
                 jsToAdd.push(url)
             }
         }
@@ -92,13 +90,11 @@
 
 customElements.define(
     'bbc-newslabs-header',
-    class extends HTMLElement
-{
-    constructor()
-    {
-        super();
-        this.attachShadow({mode:'open'});
-        this.shadowRoot.innerHTML=`
+    class extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+            this.shadowRoot.innerHTML = `
 <style>
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
@@ -171,6 +167,23 @@ div.outer[applink] #app:hover{
         padding-right: 0px;
     }
 }
+div.proto{
+    display: none;
+    padding: 22px 0em 0em;
+    background: var(--nl-red);
+    color: white;
+    font-weight: bold;
+    transform: rotate(-45deg);
+    transform-origin: bottom right;
+    width: 7em;
+    top: -13px;
+    position: absolute;
+    left: -37px;
+    text-align: center;
+    z-index: -1;
+    height: 50px;
+    font-family: sans-serif;
+}
 </style>
 <div class=outer>
 <div id=blocks class=inner>
@@ -205,83 +218,93 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 </svg><span id="userid"></span>
 </div>
 </div>
+<div class="proto">BETA</div>
 `
-        if (window.location.protocol=='https:') {
-            fetch('/whoami/')
-            .then(this.fetchError)
-            .then(resp=>resp.json())
-            .then(user=>{
-                this.userid=user.userid
-                this.userinfo=user.displayname + '\n' + user.department + '\n' + user.mail
-                window.bbc.userinfo=user
-                fetch('/generic-apis/whois/'+user.mail)
-                .then(this.fetchError)
-                .then(resp=>resp.json())
-                .then(json=>{
-                    window.bbc.userinfo.org=window.bbc.userinfo.org||{}
-                    let h=window.document.querySelector('bbc-newslabs-header')
-                    h.userid=json.retval.userid
-                    h.userinfo=json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
-                    if (json.retval.directorate) window.bbc.userinfo.org.directorate=json.retval.directorate
-                    if (json.retval.building) window.bbc.userinfo.org.building=json.retval.building
-                    if (json.retval.room) window.bbc.userinfo.org.room=json.retval.room
-                    if (json.retval.groups) window.bbc.userinfo.groups=json.retval.groups
-                    if (json.retval.title) window.bbc.userinfo.title=json.retval.title
-                })
-            })
-            .catch(err=>{})
-        }
-    }
-
-    fetchError(resp) {
-        if (!resp.ok) {
-            throw Error(resp.statusText)
-        }
-        return resp
-    }
-
-    attributeChangedCallback(name, oldvalue, newvalue) {
-        if (oldvalue!=newvalue) {
-            if (name=='applink') {
-                const app=this.shadowRoot.querySelector('#app')
-                app.setAttribute('title', 'Open ' + newvalue)
-                app.addEventListener('click', evt=>{
-                    window.location.href=newvalue
-                })
-                this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
-            } else {
-                const node=this.shadowRoot.getElementById(name)
-                if (name!='userinfo' && typeof(node)!=="undefined") node.innerHTML=newvalue
+            if (window.location.protocol == 'https:') {
+                fetch('/whoami/')
+                    .then(this.fetchError)
+                    .then(resp => resp.json())
+                    .then(user => {
+                        this.userid = user.userid
+                        this.userinfo = user.displayname + '\n' + user.department + '\n' + user.mail
+                        window.bbc.userinfo = user
+                        fetch('/generic-apis/whois/' + user.mail)
+                            .then(this.fetchError)
+                            .then(resp => resp.json())
+                            .then(json => {
+                                window.bbc.userinfo.org = window.bbc.userinfo.org || {}
+                                let h = window.document.querySelector('bbc-newslabs-header')
+                                h.userid = json.retval.userid
+                                h.userinfo = json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+                                if (json.retval.directorate) window.bbc.userinfo.org.directorate = json.retval.directorate
+                                if (json.retval.building) window.bbc.userinfo.org.building = json.retval.building
+                                if (json.retval.room) window.bbc.userinfo.org.room = json.retval.room
+                                if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
+                                if (json.retval.title) window.bbc.userinfo.title = json.retval.title
+                            })
+                    })
+                    .catch(err => { })
             }
-            if (name=='userid') {
-                this.shadowRoot.getElementById('userinfo').style.display='inline-block'
+
+        }
+
+        fetchError(resp) {
+            if (!resp.ok) {
+                throw Error(resp.statusText)
             }
-            if (name=='userinfo') {
-                this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
+            return resp
+        }
+
+        connectedCallback() {
+            if (this.hasAttribute('beta')) {
+                this.shadowRoot.querySelector('.proto').style.display='inline-block'
             }
         }
-    }
 
-    get app() { return this.getAttribute('app') }
-    set app(v) { this.setAttribute('app', v) }
+        attributeChangedCallback(name, oldvalue, newvalue) {
+            if (oldvalue != newvalue) {
+                if (name == 'applink') {
+                    const app = this.shadowRoot.querySelector('#app')
+                    app.setAttribute('title', 'Open ' + newvalue)
+                    app.addEventListener('click', evt => {
+                        window.location.href = newvalue
+                    })
+                    this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
+                } else {
+                    const node = this.shadowRoot.getElementById(name)
+                    if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
+                }
+                if (name == 'userid') {
+                    this.shadowRoot.getElementById('userinfo').style.display = 'inline-block'
+                }
+                if (name == 'userinfo') {
+                    this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
+                }
+            }
+        }
 
-    get applink() { return this.getAttribute('applink') }
-    set applink(v) { this.setAttribute('applink', v) }
+        get app() { return this.getAttribute('app') }
+        set app(v) { this.setAttribute('app', v) }
 
-    get userid() { return this.getAttribute('userid') }
-    set userid(v) { this.setAttribute('userid', v) }
+        get applink() { return this.getAttribute('applink') }
+        set applink(v) { this.setAttribute('applink', v) }
 
-    get userinfo() { return this.getAttribute('userinfo') }
-    set userinfo(v) { this.setAttribute('userinfo', v) }
+        get userid() { return this.getAttribute('userid') }
+        set userid(v) { this.setAttribute('userid', v) }
 
-    get subtitle() { return this.getAttribute('subtitle') }
-    set subtitle(v) { this.setAttribute('subtitle', v) }
+        get userinfo() { return this.getAttribute('userinfo') }
+        set userinfo(v) { this.setAttribute('userinfo', v) }
 
-    static get observedAttributes() { return [
-        'app',
-        'applink',
-        'subtitle',
-        'userid',
-        'userinfo',
-    ]}
-})
+        get subtitle() { return this.getAttribute('subtitle') }
+        set subtitle(v) { this.setAttribute('subtitle', v) }
+
+        static get observedAttributes() {
+            return [
+                'app',
+                'applink',
+                'subtitle',
+                'userid',
+                'userinfo',
+            ]
+        }
+    })
