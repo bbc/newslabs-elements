@@ -1,31 +1,101 @@
 :root, :host{
   --nl-red: #b80000;
 }
+
+/* CSS reset 2020 https://dev.to/hankchizljaw/a-modern-css-reset-6p3 */
+/* Box sizing rules */
 html {
-  box-sizing: border-box;
   font-size: 16px;
 }
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   font-family: "ReithSans" !important;
 }
-ol, ul {
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
   list-style: none;
 }
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
 img {
   max-width: 100%;
-  height: auto;
+  display: block;
 }
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* NEWSLABS specifics */
+/* Putting your content inside <main></main> will make it avoid <bbc-newslabs-header> and <bbc-newslabs-footer> elements. */
 main{
     margin-top: 51px;
     padding: 1em;
     margin-bottom: 41px;
 }
+
+/* Import Reith fonts*/
 @font-face {
   font-display: swap;
   font-family: "ReithSans";
@@ -191,16 +261,19 @@ main{
   src: url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff2") format("woff2"),
   url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff") format("woff");
 }
+
 /* these need <html class=newslabs-bootstrap> to activate them */
 .newslabs-bootstrap .btn {
-    padding: 0.375rem .75rem 0.175em;
+  padding: 0.375rem .75rem 0.175em;
 }
+
 .newslabs-bootstrap .btn-outline-primary {
-    color: var(--nl-red);
-    border-color: var(--nl-red);
+  color: var(--nl-red);
+  border-color: var(--nl-red);
 }
+
 .newslabs-bootstrap .btn-outline-primary:hover {
-    color: #fff;
-    background-color: var(--nl-red);
-    border-color: var(--nl-red);
+  color: #fff;
+  background-color: var(--nl-red);
+  border-color: var(--nl-red);
 }
