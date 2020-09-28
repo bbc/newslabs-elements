@@ -10,6 +10,25 @@
 
     window.bbc = window.bbc || {}
 
+    // An Event Bus.
+    // Used to send messages between distinct components on a page, regardless of component technology used.
+    // - https://pineco.de/creating-a-javascript-event-bus/ (general concept)
+    // - https://stackoverflow.com/a/34418446/7656091 : private data (bus inside the constructor method), and public methods (also inside the constructor, but prefixed with this.)
+    bbc.EventBus = new class {
+        constructor() {
+            const bus = document.createElement('Newslabs-EventBus')
+            this.addEventListener = function(event, callback) {
+                bus.addEventListener(event, callback)
+            }
+            this.removeEventListener = function(event, callback) {
+                bus.removeEventListener(event, callback)
+            }
+            this.dispatchEvent = function(event, detail = {}) {
+                bus.dispatchEvent(new CustomEvent(event, {detail}))
+            }
+        }
+    }
+
     // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
     bbc.addDependentScripts = async function (scriptsToAdd) {
         const s = document.createElement('script')
