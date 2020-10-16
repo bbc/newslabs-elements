@@ -161,6 +161,12 @@ xml:space="preserve">
                     'mailto:newslabs-development@lists.forge.bbc.co.uk?subject='
                     + encodeURI(newvalue + " feedback")
             }
+            else if (name=='Transcriptor')
+            {
+                this.shadowRoot.getElementById('mailto').href=
+                    'mailto:transcriptor@bbcnewslabs.co.uk?subject='
+                    + encodeURI(newvalue + " feedback")
+            }
         }
     }
 
