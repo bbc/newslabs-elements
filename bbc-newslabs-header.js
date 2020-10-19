@@ -230,7 +230,7 @@ v39.195c0,0-62.173,36.939-134.197,8.488c0,0-60.545-22.109-62.851-94.659c0,0-2.51
 c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297.547,217.66H600V-67.353H297.547V217.66z"/>
 </svg>
 </div>
-<div id=app class=inner></div>
+<div id=app class=inner>${this.app}</div>
 <div id=subtitle class=inner></div>
 <div id=userinfo class=inner>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="20px" viewBox="0 0 32 32" xml:space="preserve">
