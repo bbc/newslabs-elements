@@ -165,7 +165,6 @@ xml:space="preserve">
 
     attributeChangedCallback(name, oldvalue, newvalue) {
         if (oldvalue != newvalue) {
-            }
         }
     }
 
