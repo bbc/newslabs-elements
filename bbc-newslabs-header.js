@@ -302,7 +302,13 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
             }
         }
 
-        get app() { return this.getAttribute('app') }
+        get app() {
+            let app, meta
+            if ((app=this.getAttribute('app'))) return app
+            if ((meta=document.querySelector('meta[name=application-name]')) && (app=meta.getAttribute('content'))) return app
+            return ""
+        }
+
         set app(v) { this.setAttribute('app', v) }
 
         get applink() { return this.getAttribute('applink') }
