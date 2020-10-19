@@ -179,7 +179,7 @@ xml:space="preserve">
     }
 
     get subject() {
-        const page = "[" + location.origin + location.pathname + "]"
+        const page = "[" + location.href + "]"
         if (this.app.length == 0) return "?subject=" + encodeURI(page)
         return "?subject=" + encodeURI(this.app + " feedback " + page)
     }
