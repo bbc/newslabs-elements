@@ -1,7 +1,7 @@
 (function () {
 
     // Mobile friendly page
-    if (document.querySelectorAll('meta[name=viewport i]').length == 0) {
+    if (document.querySelectorAll('meta[name=viewport]').length == 0) {
         const m = document.createElement('meta')
         m.name = 'viewport'
         m.content = 'width=device-width, initial-scale=1'
@@ -109,11 +109,12 @@
 
 customElements.define(
     'bbc-newslabs-header',
-    class extends HTMLElement {
-        constructor() {
-            super();
-            this.attachShadow({ mode: 'open' });
-            this.shadowRoot.innerHTML = `
+    class extends HTMLElement
+{
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = `
 <style>
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
@@ -239,97 +240,99 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 </div>
 <div class="proto">BETA</div>
 `
-            if (window.location.protocol == 'https:') {
-                fetch('/whoami/')
-                    .then(this.fetchError)
-                    .then(resp => resp.json())
-                    .then(user => {
-                        this.userid = user.userid
-                        this.userinfo = user.displayname + '\n' + user.department + '\n' + user.mail
-                        window.bbc.userinfo = user
-                        fetch('/generic-apis/whois/' + user.mail)
-                            .then(this.fetchError)
-                            .then(resp => resp.json())
-                            .then(json => {
-                                window.bbc.userinfo.org = window.bbc.userinfo.org || {}
-                                let h = window.document.querySelector('bbc-newslabs-header')
-                                h.userid = json.retval.userid
-                                h.userinfo = json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
-                                if (json.retval.directorate) window.bbc.userinfo.org.directorate = json.retval.directorate
-                                if (json.retval.building) window.bbc.userinfo.org.building = json.retval.building
-                                if (json.retval.room) window.bbc.userinfo.org.room = json.retval.room
-                                if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
-                                if (json.retval.title) window.bbc.userinfo.title = json.retval.title
-                            })
-                    })
-                    .catch(err => { })
+        if (window.location.protocol == 'https:') {
+            fetch('/whoami/')
+                .then(this.fetchError)
+                .then(resp => resp.json())
+                .then(user => {
+                    this.userid = user.userid
+                    this.userinfo = user.displayname + '\n' + user.department + '\n' + user.mail
+                    window.bbc.userinfo = user
+                    fetch('/generic-apis/whois/' + user.mail)
+                        .then(this.fetchError)
+                        .then(resp => resp.json())
+                        .then(json => {
+                            window.bbc.userinfo.org = window.bbc.userinfo.org || {}
+                            let h = window.document.querySelector('bbc-newslabs-header')
+                            h.userid = json.retval.userid
+                            h.userinfo = json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+                            if (json.retval.directorate) window.bbc.userinfo.org.directorate = json.retval.directorate
+                            if (json.retval.building) window.bbc.userinfo.org.building = json.retval.building
+                            if (json.retval.room) window.bbc.userinfo.org.room = json.retval.room
+                            if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
+                            if (json.retval.title) window.bbc.userinfo.title = json.retval.title
+                        })
+                })
+                .catch(err => { })
+        }
+
+    }
+
+    fetchError(resp) {
+        if (!resp.ok) {
+            throw Error(resp.statusText)
+        }
+        return resp
+    }
+
+    connectedCallback() {
+        if (this.hasAttribute('beta')) {
+            this.shadowRoot.querySelector('.proto').style.display='inline-block'
+        }
+    }
+
+    attributeChangedCallback(name, oldvalue, newvalue) {
+        if (oldvalue != newvalue) {
+            if (name == 'applink') {
+                const app = this.shadowRoot.querySelector('#app')
+                app.setAttribute('title', 'Open ' + newvalue)
+                app.addEventListener('click', evt => {
+                    window.location.href = newvalue
+                })
+                this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
+            } else if (name == 'app') {
+                this.shadowRoot.getElementById('app').innerHTML = this.app
+            } else {
+                const node = this.shadowRoot.getElementById(name)
+                if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
             }
-
-        }
-
-        fetchError(resp) {
-            if (!resp.ok) {
-                throw Error(resp.statusText)
+            if (name == 'userid') {
+                this.shadowRoot.getElementById('userinfo').style.display = 'inline-block'
             }
-            return resp
-        }
-
-        connectedCallback() {
-            if (this.hasAttribute('beta')) {
-                this.shadowRoot.querySelector('.proto').style.display='inline-block'
+            if (name == 'userinfo') {
+                this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
             }
         }
+    }
 
-        attributeChangedCallback(name, oldvalue, newvalue) {
-            if (oldvalue != newvalue) {
-                if (name == 'applink') {
-                    const app = this.shadowRoot.querySelector('#app')
-                    app.setAttribute('title', 'Open ' + newvalue)
-                    app.addEventListener('click', evt => {
-                        window.location.href = newvalue
-                    })
-                    this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
-                } else {
-                    const node = this.shadowRoot.getElementById(name)
-                    if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
-                }
-                if (name == 'userid') {
-                    this.shadowRoot.getElementById('userinfo').style.display = 'inline-block'
-                }
-                if (name == 'userinfo') {
-                    this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
-                }
-            }
-        }
+    get app() {
+        let app, meta
+        if ((app=this.getAttribute('app'))) return app
+        if ((meta=document.querySelector('meta[name=application-name]')) && (app=meta.getAttribute('content'))) return app
+        return ""
+    }
 
-        get app() {
-            let app, meta
-            if ((app=this.getAttribute('app'))) return app
-            if ((meta=document.querySelector('meta[name=application-name]')) && (app=meta.getAttribute('content'))) return app
-            return ""
-        }
+    set app(v) { this.setAttribute('app', v) }
 
-        set app(v) { this.setAttribute('app', v) }
+    get applink() { return this.getAttribute('applink') }
+    set applink(v) { this.setAttribute('applink', v) }
 
-        get applink() { return this.getAttribute('applink') }
-        set applink(v) { this.setAttribute('applink', v) }
+    get userid() { return this.getAttribute('userid') }
+    set userid(v) { this.setAttribute('userid', v) }
 
-        get userid() { return this.getAttribute('userid') }
-        set userid(v) { this.setAttribute('userid', v) }
+    get userinfo() { return this.getAttribute('userinfo') }
+    set userinfo(v) { this.setAttribute('userinfo', v) }
 
-        get userinfo() { return this.getAttribute('userinfo') }
-        set userinfo(v) { this.setAttribute('userinfo', v) }
+    get subtitle() { return this.getAttribute('subtitle') }
+    set subtitle(v) { this.setAttribute('subtitle', v) }
 
-        get subtitle() { return this.getAttribute('subtitle') }
-        set subtitle(v) { this.setAttribute('subtitle', v) }
-
-        static get observedAttributes() {
-            return [
-                'app',
-                'applink',
-                'subtitle',
-                'userid',
-                'userinfo',
-            ]
-        }
-    })
+    static get observedAttributes() {
+        return [
+            'app',
+            'applink',
+            'subtitle',
+            'userid',
+            'userinfo',
+        ]
+    }
+})
