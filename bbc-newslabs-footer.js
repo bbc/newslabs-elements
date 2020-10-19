@@ -169,14 +169,17 @@ xml:space="preserve">
     }
 
     get app() {
-        return this.hasAttribute('app') && this.getAttribute('app').trim() || ""
+        let app, meta
+        if ((app=this.getAttribute('app'))) return app
+        if ((meta=document.querySelector('meta[name=application-name]')) && (app=meta.getAttribute('content'))) return app
+        return ""
     }
     set app(v) {
         this.setAttribute('app', v.trim())
     }
 
     get subject() {
-        let page = "[" + location.origin + location.pathname + "]"
+        const page = "[" + location.origin + location.pathname + "]"
         if (this.app.length == 0) return "?subject=" + encodeURI(page)
         return "?subject=" + encodeURI(this.app + " feedback " + page)
     }
