@@ -28,6 +28,9 @@ footer{
     position: absolute;
     bottom: 0px;
 }
+footer.notred{
+    background-color: black;
+}
 footer div{
     display: table-cell;
     line-height: 44px;
@@ -168,6 +171,9 @@ xml:space="preserve">
         this.shadowRoot.getElementById('mailto').addEventListener('click', () => {
             location.assign('mailto:' + this.email + this.subject)
         })
+        if (this.notred) {
+            this.shadowRoot.querySelector('footer').classList.add('notred')
+        }
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
@@ -198,10 +204,15 @@ xml:space="preserve">
         return "?subject=" + encodeURIComponent(this.app + " feedback " + page)
     }
 
+    get notred() {
+        return this.hasAttribute('notred')
+    }
+
     static get observedAttributes() {
         return[
             'app',
             'email',
+            'notred',
         ]
     }
 })
