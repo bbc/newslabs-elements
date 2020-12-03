@@ -204,6 +204,18 @@ div.proto{
     height: 50px;
     font-family: sans-serif;
 }
+#help{
+    padding: 3px 11px 0;
+    cursor: pointer;
+    border-left: 1px solid silver;
+    display: none;
+}
+#help[active]{
+    display: unset;
+}
+#help:hover{
+    background-color: var(--nl-red);
+}
 </style>
 <div class=outer>
 <div id=blocks class=inner>
@@ -232,6 +244,15 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 </div>
 <div id=app class=inner>${this.app}</div>
 <div id=subtitle class=inner></div>
+<div id=help title="Help" class=inner>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+	<title>
+		help
+	</title>
+    <circle cx="10" cy="10" r="8" fill="white"></circle>
+	<path d="M10 0a10 10 0 1 0 10 10A10 10 0 0 0 10 0zm1 16H9v-2h2zm2.71-7.6a2.63 2.63 0 0 1-.34.74 3.06 3.06 0 0 1-.48.55l-.54.48c-.21.18-.41.35-.59.52a3 3 0 0 0-.47.56A2.49 2.49 0 0 0 11 12a4.12 4.12 0 0 0-.11 1H9.08a8.68 8.68 0 0 1 .08-1.25 3.54 3.54 0 0 1 .24-.9 2.81 2.81 0 0 1 .41-.68 4.63 4.63 0 0 1 .58-.58l.51-.44a3 3 0 0 0 .44-.45 1.92 1.92 0 0 0 .3-.54 2.13 2.13 0 0 0 .11-.72 1.94 1.94 0 0 0-.18-.86 1.79 1.79 0 0 0-.43-.58 1.69 1.69 0 0 0-.54-.32 1.55 1.55 0 0 0-.5-.1 1.77 1.77 0 0 0-1.53.68 3 3 0 0 0-.49 1.82H6.16a4.84 4.84 0 0 1 .28-1.68 3.57 3.57 0 0 1 .8-1.29 3.62 3.62 0 0 1 1.27-.83A4.52 4.52 0 0 1 10.18 4a4.42 4.42 0 0 1 1.43.23 3.48 3.48 0 0 1 1.16.65 3 3 0 0 1 .78 1.06 3.49 3.49 0 0 1 .28 1.44 3.63 3.63 0 0 1-.12 1.02z"/>
+</svg>
+</div>
 <div id=userinfo class=inner>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="20px" viewBox="0 0 32 32" xml:space="preserve">
 <circle cx="16" cy="16" r="6.1"></circle><path d="M16 0a16 16 0 0 0 0 32 16.1 16.1 0 0 0 8.6-2.7L22.1 24H9.9l-1.6 3.5A13.8 13.8 0 0 1 2 15.9a14 14 0 1 1 23.9 10l.9 1.9A16 16 0 0 0 16 0z"></path>
@@ -276,9 +297,26 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
     }
 
     connectedCallback() {
+        if (this.hasAttribute('help')) {
+            this._helpon()
+        }
         if (this.hasAttribute('beta')) {
             this.shadowRoot.querySelector('.proto').style.display='inline-block'
         }
+    }
+
+    _helpon() {
+        if (this.help.length < 3) return
+        const h = this.shadowRoot.getElementById('help')
+        h.setAttribute('active', 'active')
+        h.addEventListener('click', evt => {
+            if (this.help[0] == '#') {
+                window.location.hash = this.help
+            }
+            else {
+                window.location.href = this.help
+            }
+        })
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
@@ -292,6 +330,8 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
                 this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
             } else if (name == 'app') {
                 this.shadowRoot.getElementById('app').innerHTML = this.app
+            } else if (name == 'help') {
+                _helpon()
             } else {
                 const node = this.shadowRoot.getElementById(name)
                 if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
@@ -325,6 +365,9 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
+
+    get help() { return this.getAttribute('help') }
+    set help(v) { this.setAttribute('help', v) }
 
     static get observedAttributes() {
         return [
