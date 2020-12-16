@@ -205,7 +205,7 @@ div.proto{
     font-family: sans-serif;
 }
 #help{
-    padding: 3px 11px 0;
+    padding: 10px 11px 0;
     cursor: pointer;
     border-left: 1px solid silver;
     display: none;
@@ -215,6 +215,19 @@ div.proto{
 }
 #help:hover{
     background-color: var(--nl-red);
+}
+#help[active][text]{
+    padding-top: 0px;
+    font-size: 18px;
+}
+#help[active][text] svg{
+    display: none;
+}
+#help[active][text]:before{
+    content: attr(text);
+}
+#help[active][text]:hover{
+    color: white;
 }
 </style>
 <div class=outer>
@@ -317,6 +330,8 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
                 window.location.href = this.help
             }
         })
+        if (!this.helptext || this.helptext.length < 1) return
+        h.setAttribute('text', this.helptext)
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
@@ -330,7 +345,7 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
                 this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
             } else if (name == 'app') {
                 this.shadowRoot.getElementById('app').innerHTML = this.app
-            } else if (name == 'help') {
+            } else if (name.slice(0,4) == 'help') {
                 _helpon()
             } else {
                 const node = this.shadowRoot.getElementById(name)
@@ -368,6 +383,9 @@ c0,0,21.563-8.255,60.313-4.586C481.629-28.812,504.789-26.521,538.301-12.528 M297
 
     get help() { return this.getAttribute('help') }
     set help(v) { this.setAttribute('help', v) }
+
+    get helptext() { return this.getAttribute('helptext') }
+    set helptext(v) { this.setAttribute('helptext', v) }
 
     static get observedAttributes() {
         return [
