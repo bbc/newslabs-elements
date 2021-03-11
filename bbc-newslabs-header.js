@@ -84,7 +84,7 @@
 
     let jsToAdd = []
 
-    const firstCSSNode = document.querySelector('link [rel=stylesheet]')
+    const firstCSSNode = document.querySelector('link[rel=stylesheet]')
     let firstCSS = false
 
     filesToAdd.forEach(url => {
