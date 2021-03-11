@@ -84,6 +84,9 @@
 
     let jsToAdd = []
 
+    const firstCSSNode = document.querySelector('link [rel=stylesheet]')
+    let firstCSS = false
+
     filesToAdd.forEach(url => {
         let n = -1
         let x = url.split('.')
@@ -96,7 +99,15 @@
                 e = document.createElement('link')
                 e.rel = 'stylesheet'
                 e.href = url
-                document.querySelector('head').appendChild(e)
+                if (firstCSS === false) {
+                    if (firstCSSNode !== null) {
+                        firstCSS = firstCSSNode.parentNode.insertBefore(e, firstCSSNode)
+                    } else {
+                        firstCSS = document.querySelector('head').appendChild(e)
+                    }
+                } else {
+                    firstCSS.after(e)
+                }
             }
             if (ext == 'js') {
                 jsToAdd.push(url)
