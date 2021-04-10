@@ -36,9 +36,9 @@
             let r = await fetch(scriptsToAdd[i])
             s.text += await r.text()
         }
-        setTimeout(function(){
+        document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('body').appendChild(s)
-        },0)
+        })
     }
 
     // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
