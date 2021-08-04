@@ -262,6 +262,25 @@ main{
   url("https://gel.files.bbci.co.uk/r2.511/BBCReithSerif_W_ExBdIt.woff") format("woff");
 }
 
+@font-face {
+    font-family: BBCReithQalam;
+    font-weight: 700;
+    font-style: normal;
+    src: url(https://ws-downloads.files.bbci.co.uk/fonts/ReithQalam/v1.100/bold.woff2) format("woff2"),
+    url(https://ws-downloads.files.bbci.co.uk/fonts/ReithQalam/v1.100/bold.woff) format("woff");
+    font-display: optional
+}
+
+@font-face {
+    font-family: BBCReithQalam;
+    font-weight: 400;
+    font-style: normal;
+    src: url(https://ws-downloads.files.bbci.co.uk/fonts/ReithQalam/v1.100/normal.woff2) format("woff2"),
+    url(https://ws-downloads.files.bbci.co.uk/fonts/ReithQalam/v1.100/normal.woff) format("woff");
+    font-display: optional
+}
+
+
 /* these need <html class=newslabs-bootstrap> to activate them */
 .newslabs-bootstrap .btn {
   padding: 0.375rem .75rem 0.175em;
