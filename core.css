@@ -281,9 +281,8 @@ main{
 }
 
 @font-face {
-  font-display: swap;
-  font-family: "Virgil";
-  src: url("https://github.com/bbc/newslabs-elements/raw/master/Virgil.woff2") format("woff2");
+  font-family: Virgil;
+  src: url("https://bbc.github.io/newslabs-elements/Virgil.woff2") format("woff2");
 }
 
 
