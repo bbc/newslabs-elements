@@ -280,6 +280,12 @@ main{
     font-display: optional
 }
 
+@font-face {
+  font-display: swap;
+  font-family: "Virgil";
+  src: url("https://bbc.github.io/newslabs-elements/Virgil.woff2") format("woff2");
+}
+
 
 /* these need <html class=newslabs-bootstrap> to activate them */
 .newslabs-bootstrap .btn {
