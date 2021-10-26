@@ -38,7 +38,7 @@ footer div{
 }
 div.logo .bbc-blocks--image{
     position: absolute;
-    top: 6px;
+    top: -5px;
     left: 8px;
     width: 40px;
     fill: white;
