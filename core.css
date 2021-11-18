@@ -269,22 +269,22 @@ main{
 
 @font-face {
   font-display: swap;
-  font-family: "BBCReithQalam";
+  font-family: "BBC Reith Qalam";
   font-weight: 700;
   font-style: normal;
   src: url("https://static.files.bbci.co.uk/fonts/reith-qalam/1.100/BBCReithQalam_W_Bd.woff2") format("woff2"),
   url("https://static.files.bbci.co.uk/fonts/reith-qalam/1.100/BBCReithQalam_W_Bd.woff") format("woff");
-  font-display: optional
+  _font-display: optional
 }
 
 @font-face {
   font-display: swap;
-  font-family: "BBCReithQalam";
+  font-family: "BBC Reith Qalam";
   font-weight: 400;
   font-style: normal;
   src: url("https://static.files.bbci.co.uk/fonts/reith-qalam/1.100/BBCReithQalam_W_Rg.woff2") format("woff2"),
   url("https://static.files.bbci.co.uk/fonts/reith-qalam/1.100/BBCReithQalam_W_Rg.woff") format("woff");
-  font-display: optional
+  _font-display: optional
 }
 
 
