@@ -79,6 +79,8 @@
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
     }
 
+    // newslabs analyics
+    
     // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
     filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
 
@@ -286,7 +288,9 @@ div.proto{
                             if (json.retval.room) window.bbc.userinfo.org.room = json.retval.room
                             if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
                             if (json.retval.title) window.bbc.userinfo.title = json.retval.title
-                        })
+			    
+			    _enable_matomo()
+		        })
                 })
                 .catch(err => { })
         }
@@ -348,6 +352,9 @@ div.proto{
             if (name == 'userinfo') {
                 this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
             }
+            if (name == 'matomo_siteid') {
+                _enable_matomo()
+            }
         }
     }
 
@@ -369,6 +376,9 @@ div.proto{
     get userinfo() { return this.getAttribute('userinfo') }
     set userinfo(v) { this.setAttribute('userinfo', v) }
 
+    get matomo_siteid() { return this.getAttribute('matomo_siteid') }
+    set matomo_siteid(v) { this.setAttribute('matomo_siteid', v) }
+
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
 
@@ -385,6 +395,21 @@ div.proto{
             'subtitle',
             'userid',
             'userinfo',
+            'matomo_siteid',
         ]
+    }
+	
+    _enable_matomo() {
+        if (!this.matomo_siteid) return
+	console.log('Enabling Matomo for siteId:', this.matomo_siteid)
+	let _paq = window._paq = window._paq || [];
+	const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
+	_paq.push(['trackPageView']);
+	_paq.push(['enableLinkTracking']);
+	_paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
+	_paq.push(['setSiteId', this.matomo_siteid]);
+	_paq.push(['setUserId', window.bbc.userinfo.email]);
+	let d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+	g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
     }
 })
