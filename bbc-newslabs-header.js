@@ -326,6 +326,10 @@ div.proto{
                                 user.userid = json.retval.userid
                             }
 
+                            if (json.retval.displayname) {
+                                user.displayname = json.retval.displayname
+                            }
+
                             this._enable_matomo()
                         })
                 })
