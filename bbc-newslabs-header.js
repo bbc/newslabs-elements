@@ -342,6 +342,8 @@ div.proto{
                 this.shadowRoot.getElementById('app').innerHTML = this.app
             } else if (name.slice(0,4) == 'help') {
                 _helpon()
+            } else if (name == 'matomo_siteid') {
+                _enable_matomo()
             } else {
                 const node = this.shadowRoot.getElementById(name)
                 if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
@@ -351,9 +353,6 @@ div.proto{
             }
             if (name == 'userinfo') {
                 this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
-            }
-            if (name == 'matomo_siteid') {
-                _enable_matomo()
             }
         }
     }
