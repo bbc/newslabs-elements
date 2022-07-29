@@ -289,7 +289,7 @@ div.proto{
                             if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
                             if (json.retval.title) window.bbc.userinfo.title = json.retval.title
 			    
-			    _enable_matomo()
+			    this._enable_matomo()
 		        })
                 })
                 .catch(err => { })
