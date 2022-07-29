@@ -341,9 +341,9 @@ div.proto{
             } else if (name == 'app') {
                 this.shadowRoot.getElementById('app').innerHTML = this.app
             } else if (name.slice(0,4) == 'help') {
-                _helpon()
+                this._helpon()
             } else if (name == 'matomo_siteid') {
-                _enable_matomo()
+                this._enable_matomo()
             } else {
                 const node = this.shadowRoot.getElementById(name)
                 if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
