@@ -401,6 +401,9 @@ div.proto{
 	
     _enable_matomo() {
         if (!this.matomo_siteid) return
+	if (!window.bbc) return
+	if (!window.userinfo) return
+	if (!window.userinfo.email) return
 	console.log('Enabling Matomo for siteId:', this.matomo_siteid)
 	let _paq = window._paq = window._paq || [];
 	const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
