@@ -409,7 +409,12 @@ div.proto{
         _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
         _paq.push(['setSiteId', this.matomo_siteid]);
         _paq.push(['setUserId', window.bbc.userinfo.email]);
-        let d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        let d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.src = matomoUrl + 'matomo.js';
+        s.parentNode.insertBefore(g, s);
     }
 })
