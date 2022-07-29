@@ -279,18 +279,55 @@ div.proto{
                         .then(this.fetchError)
                         .then(resp => resp.json())
                         .then(json => {
+                            if (json.retval.status == 'failed') {
+                                console.log({whois_failed: json.retval.reason})
+                                return
+                            }
                             window.bbc.userinfo.org = window.bbc.userinfo.org || {}
                             let h = window.document.querySelector('bbc-newslabs-header')
                             h.userid = json.retval.userid
                             h.userinfo = json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
-                            if (json.retval.directorate) window.bbc.userinfo.org.directorate = json.retval.directorate
-                            if (json.retval.building) window.bbc.userinfo.org.building = json.retval.building
-                            if (json.retval.room) window.bbc.userinfo.org.room = json.retval.room
-                            if (json.retval.groups) window.bbc.userinfo.groups = json.retval.groups
-                            if (json.retval.title) window.bbc.userinfo.title = json.retval.title
-			    
-			    this._enable_matomo()
-		        })
+
+                            if (json.retval.directorate) {
+                                user.org.directorate = json.retval.directorate
+                            }
+
+                            if (json.retval.division) {
+                                user.org.division = json.retval.division
+                                user.division = json.retval.division
+                            }
+
+                            if (json.retval.department) {
+                                user.department = json.retval.department
+                                user.org.department = json.retval.department
+                            }
+
+                            if (json.retval.building) {
+                                user.org.building = json.retval.building
+                            }
+
+                            if (json.retval.room) {
+                                user.org.room = json.retval.room
+                            }
+
+                            if (json.retval.groups) {
+                                user.groups = json.retval.groups
+                            }
+
+                            if (json.retval.title) {
+                                user.title = json.retval.title
+                            }
+
+                            if (json.retval.costcentre) {
+                                user.org.cost_code = json.retval.costcentre
+                            }
+
+                            if (json.retval.userid) {
+                                user.userid = json.retval.userid
+                            }
+
+                            this._enable_matomo()
+                        })
                 })
                 .catch(err => { })
         }
@@ -403,12 +440,13 @@ div.proto{
         if (!window?.bbc?.userinfo?.email) return
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
         let _paq = window._paq = window._paq || [];
+        const userinfo = window.bbc.userinfo
         const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
         _paq.push(['setSiteId', this.matomo_siteid]);
-        _paq.push(['setUserId', window.bbc.userinfo.email]);
+        _paq.push(['setUserId', `${userinfo.email} / ${userinfo.displayname} / ${userinfo.title} / ${userinfo.department}`]);
         let d = document,
             g = d.createElement('script'),
             s = d.getElementsByTagName('script')[0];
