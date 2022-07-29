@@ -400,18 +400,16 @@ div.proto{
 	
     _enable_matomo() {
         if (!this.matomo_siteid) return
-	if (!window.bbc) return
-	if (!window.userinfo) return
-	if (!window.userinfo.email) return
-	console.log('Enabling Matomo for siteId:', this.matomo_siteid)
-	let _paq = window._paq = window._paq || [];
-	const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
-	_paq.push(['trackPageView']);
-	_paq.push(['enableLinkTracking']);
-	_paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
-	_paq.push(['setSiteId', this.matomo_siteid]);
-	_paq.push(['setUserId', window.bbc.userinfo.email]);
-	let d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-	g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        if (!window?.bbc.?userinfo?.email) return
+        console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
+        let _paq = window._paq = window._paq || [];
+        const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
+        _paq.push(['setSiteId', this.matomo_siteid]);
+        _paq.push(['setUserId', window.bbc.userinfo.email]);
+        let d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
     }
 })
