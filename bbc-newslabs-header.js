@@ -445,7 +445,7 @@ div.proto{
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
         let _paq = window._paq = window._paq || [];
         const userinfo = window.bbc.userinfo
-        const matomoUrl = window.location.hostname.split('.').reverse().join('.').indexOf('co.newslabs.') == 0 ? '/newslabs-analytics/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
+        const matomoUrl = 'https://newslabs-analytics.tools.bbc.co.uk/'
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
