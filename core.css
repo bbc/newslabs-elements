@@ -304,4 +304,4 @@ main{
   border-color: var(--nl-red);
 }
 
-@import "gel.css";
+@import "./gel.css";
