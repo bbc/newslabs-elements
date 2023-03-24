@@ -1,3 +1,5 @@
+@import "gel.css";
+
 :root, :host{
   --nl-red: #b80000;
 }
@@ -303,5 +305,3 @@ main{
   background-color: var(--nl-red);
   border-color: var(--nl-red);
 }
-
-@import "./gel.css";
