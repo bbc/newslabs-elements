@@ -303,3 +303,5 @@ main{
   background-color: var(--nl-red);
   border-color: var(--nl-red);
 }
+
+@import url(gel.css);
