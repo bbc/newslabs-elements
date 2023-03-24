@@ -1,0 +1,38 @@
+[gel] :root{
+    --dark: #59526c;
+    --very-dark: #373343;
+    --night-gray: #0e0e0e;
+    --gray-300-c: #c0c0c0;
+    --gray-200-b: #d6d6d6;
+}
+[gel] button{
+    background-color: white;
+    border: 2px solid var(--gray-300-c);
+    color: var(--night-gray);
+    font-weight: 500;
+    margin-left: 1em;
+    cursor: pointer;
+}
+[gel] button:hover{
+    background-color: var(--gray-300-c);
+}
+[gel] button[primary]:hover{
+    background-color: var(--very-dark);
+    border-color: var(--very-dark);
+}
+[gel] button[primary]{
+    background-color: var(--dark);
+    border-color: var(--dark);
+    color: white;
+}
+[gel] button.icon img{
+    height: 1.5em;
+}
+[gel] button.icon{
+    border: 1px solid transparent;
+    margin-left: 0.5em;
+}
+[gel] button.icon:hover{
+    background: white;
+    border-color: var(--gray-300-c);
+}
