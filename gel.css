@@ -36,3 +36,8 @@
     background: white;
     border-color: var(--gray-300-c);
 }
+
+[gel] button[disabled]{
+    opacity: 0.4;
+    cursor: default;
+}
