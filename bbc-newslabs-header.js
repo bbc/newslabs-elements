@@ -72,7 +72,7 @@
     let filesToAdd = []
 
     // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
-    // Here, order is important as BS depends on JQ
+    // Here, order is important as Bootstrap depends on JQuery
     if (document.querySelector('html').classList.contains('newslabs-bootstrap')) {
         filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
         filesToAdd.push('https://code.jquery.com/jquery-3.5.1.slim.min.js')
@@ -366,8 +366,12 @@ div.proto{
                 window.location.href = this.help
             }
         })
-        if (!this.helptext || this.helptext.length < 1) return
-        h.setAttribute('text', this.helptext)
+        if (this?.helptext) {
+          h.setAttribute('text', this.helptext)
+        }
+        if (this?.helptitle) {
+          h.setAttribute('title', this.helptitle)
+        }
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
@@ -427,6 +431,9 @@ div.proto{
 
     get helptext() { return this.getAttribute('helptext') }
     set helptext(v) { this.setAttribute('helptext', v) }
+
+    get helptitle() { return this.getAttribute('helptitle') }
+    set helptitle(v) { this.setAttribute('helptitle', v) }
 
     static get observedAttributes() {
         return [
