@@ -228,7 +228,8 @@ div.proto{
     display: unset;
 }
 #help:hover{
-    background-color: var(--nl-red);
+    _background-color: var(--nl-red);
+    border-bottom: 4px solid var(--nl-red);
 }
 #help[active][text]{
     padding-top: 0px;
@@ -241,7 +242,7 @@ div.proto{
     content: attr(text);
 }
 #help[active][text]:hover{
-    color: white;
+    _color: white;
 }
 </style>
 <div class=outer>
