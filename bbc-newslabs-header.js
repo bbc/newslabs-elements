@@ -30,15 +30,19 @@
     }
 
     // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
-    bbc.addDependentScripts = async function (scriptsToAdd) {
+    bbc.addDependentScripts = async function (scriptsToAdd, immediate=false) {
         const s = document.createElement('script')
         for (var i = 0; i < scriptsToAdd.length; i++) {
             let r = await fetch(scriptsToAdd[i])
             s.text += await r.text()
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('body').appendChild(s)
-        })
+	if (immediate) {
+            document.querySelector('head').appendChild(s)
+	} else {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('body').appendChild(s)
+            })
+	}
     }
 
     // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
