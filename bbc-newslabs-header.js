@@ -185,6 +185,7 @@ div.outer[test] #app:after{
     height: 65%;
     display: flex;
     align-items: center;
+    line-height: 1em;
 }
 div.outer[applink] #app:hover{
     background: linear-gradient(0deg, var(--nl-red) 4px, transparent 0px);
