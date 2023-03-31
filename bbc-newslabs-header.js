@@ -369,6 +369,9 @@ div.proto{
         if (this.hasAttribute('beta')) {
             this.shadowRoot.querySelector('.proto').style.display='inline-block'
         }
+        if (window?.location?.hostname?.includes('localhost') || window?.location?.hostname?.includes('test')) {
+            this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
+        }
     }
 
     _helpon() {
