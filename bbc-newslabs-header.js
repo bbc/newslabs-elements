@@ -170,9 +170,21 @@ div.outer div{
     border-right: 1px solid silver;
     font-weight: bold;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 #app:empty{
     display: none;
+}
+div.outer[test] #app:after{
+    content: "TEST";
+    border: 2px solid var(--nl-red);
+    font-size: 0.65em;
+    padding: 0 0.25em;
+    margin-left: 0.8em;
+    height: 65%;
+    display: flex;
+    align-items: center;
 }
 div.outer[applink] #app:hover{
     background: linear-gradient(0deg, var(--nl-red) 4px, transparent 0px);
