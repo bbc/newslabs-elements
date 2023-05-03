@@ -401,7 +401,12 @@ div.proto{
                 const app = this.shadowRoot.querySelector('#app')
                 app.setAttribute('title', 'Open ' + newvalue)
                 app.addEventListener('click', evt => {
-                    window.location.href = newvalue
+                    // support applink="${location.pathname}"
+                    let href = newvalue
+                    if (href.includes('${') && href.includes('}')) {
+                        href = eval("`" + href + "`")
+                    }
+                    window.location.href = href
                 })
                 this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
             } else if (name == 'app') {
