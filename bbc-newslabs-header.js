@@ -36,13 +36,13 @@
             let r = await fetch(scriptsToAdd[i])
             s.text += await r.text()
         }
-	if (immediate) {
+        if (immediate) {
             document.querySelector('head').appendChild(s)
-	} else {
+        } else {
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('body').appendChild(s)
             })
-	}
+        }
     }
 
     // Usage: div.textContent = bbc.timeSince(new Date(document.lastModified)); - specific date object
@@ -57,11 +57,11 @@
             { label: 'second', seconds: 1 }
         ];
         let date;
-	if (typeof(value) == 'string') {
+        if (typeof(value) == 'string') {
             date = new Date(value);
         } else {
             date = value; // assume a date object has been passed
-	}
+        }
         const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
         const interval = intervals.find(i => i.seconds < seconds);
         const count = Math.floor(seconds / interval.seconds);
