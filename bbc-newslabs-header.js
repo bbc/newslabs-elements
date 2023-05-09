@@ -62,7 +62,7 @@
         } else {
             date = value; // assume a date object has been passed
         }
-        const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+        const seconds = Math.min(1, Math.floor((Date.now() - date.getTime()) / 1000));
         const interval = intervals.find(i => i.seconds < seconds);
         const count = Math.floor(seconds / interval.seconds);
         return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
