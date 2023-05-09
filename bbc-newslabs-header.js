@@ -47,7 +47,7 @@
 
     // Usage: div.textContent = bbc.timeSince(new Date(document.lastModified)); - specific date object
     // or     div.textContent = bbc.timeSince(document.lastModified); - well-formed string that Date can recognise.
-    bbc.timeSince = function (date) {
+    bbc.timeSince = function (value) {
         const intervals = [
             { label: 'year', seconds: 31536000 },
             { label: 'month', seconds: 2592000 },
@@ -56,8 +56,11 @@
             { label: 'minute', seconds: 60 },
             { label: 'second', seconds: 1 }
         ];
-        if (typeof(date) == 'string') {
-            date = new Date(date);
+        let date;
+	if (typeof(value) == 'string') {
+            date = new Date(value);
+        } else {
+            date = value; // assume a date object has been passed
 	}
         const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
         const interval = intervals.find(i => i.seconds < seconds);
