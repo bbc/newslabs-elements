@@ -65,6 +65,7 @@
         const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
         const interval = intervals.find(i => i.seconds < seconds);
         const count = Math.floor(seconds / interval.seconds);
+        console.log({seconds, interval, count});
         return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
     }
 
@@ -438,6 +439,8 @@ div.proto{
                 this._helpon()
             } else if (name == 'matomo_siteid') {
                 this._enable_matomo()
+            } else if (name == 'backgroundColor') {
+                this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
             } else {
                 const node = this.shadowRoot.getElementById(name)
                 if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
@@ -472,6 +475,9 @@ div.proto{
     get matomo_siteid() { return this.getAttribute('matomo_siteid') }
     set matomo_siteid(v) { this.setAttribute('matomo_siteid', v) }
 
+    get backgroundColor() { return this.getAttribute('backgroundColor') }
+    set backgroundColor(v) { this.setAttribute('backgroundColor', v) }
+
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
 
@@ -492,6 +498,7 @@ div.proto{
             'userid',
             'userinfo',
             'matomo_siteid',
+            'backgroundColor',
         ]
     }
 	
