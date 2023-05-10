@@ -64,8 +64,9 @@
         }
         const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
         const interval = intervals.find(i => i.seconds < seconds);
-        const count = Math.floor(seconds / interval.seconds);
-        console.log({seconds, interval, count});
+        let count = Math.floor(seconds / interval.seconds);
+        if (count == Infinity) count = seconds;
+        //console.log({seconds, interval, count});
         return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
     }
 
