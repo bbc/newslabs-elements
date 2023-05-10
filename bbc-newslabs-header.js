@@ -439,7 +439,7 @@ div.proto{
                 this._helpon()
             } else if (name == 'matomo_siteid') {
                 this._enable_matomo()
-            } else if (name == 'backgroundColor') {
+            } else if (name == 'backgroundcolor') {
                 this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
             } else {
                 const node = this.shadowRoot.getElementById(name)
@@ -475,8 +475,8 @@ div.proto{
     get matomo_siteid() { return this.getAttribute('matomo_siteid') }
     set matomo_siteid(v) { this.setAttribute('matomo_siteid', v) }
 
-    get backgroundColor() { return this.getAttribute('backgroundColor') }
-    set backgroundColor(v) { this.setAttribute('backgroundColor', v) }
+    get backgroundcolor() { return this.getAttribute('backgroundcolor') }
+    set backgroundcolor(v) { this.setAttribute('backgroundcolor', v) }
 
     get subtitle() { return this.getAttribute('subtitle') }
     set subtitle(v) { this.setAttribute('subtitle', v) }
@@ -498,7 +498,7 @@ div.proto{
             'userid',
             'userinfo',
             'matomo_siteid',
-            'backgroundColor',
+            'backgroundcolor',
         ]
     }
 	
