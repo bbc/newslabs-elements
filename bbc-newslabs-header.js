@@ -419,6 +419,10 @@ button[download]::before{
         return resp
     }
 
+    get parent() {
+        return this.getRootNode().host
+    }
+
     connectedCallback() {
         if (this.hasAttribute('help')) {
             this._helpon()
