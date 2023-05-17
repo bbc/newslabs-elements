@@ -286,6 +286,37 @@ div.proto{
 #help[active][text]:hover{
     _color: white;
 }
+span.buttons{
+    float: right;
+    position: relative;
+}
+button{
+    background-color: white;
+    height: 1.7em;
+    display: inline-block;
+    line-height: 1.5em;
+    font-size: 12pt;
+    padding: 0 1ch;
+    margin-left: 1em;
+    position: relative;
+    top: -1px;
+}
+button[onclick]:hover{
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+button[download]::before{
+    content: "";
+    background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8c3ZnIGZpbGw9IiMwMDAwMDAiIGhlaWdodD0iODAwcHgiIHdpZHRoPSI4MDBweCIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiAKICAgICB2aWV3Qm94PSIwIDAgMjkuOTc4IDI5Ljk3OCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgogICAgPHBhdGggZD0iTTI1LjQ2MiwxOS4xMDV2Ni44NDhINC41MTV2LTYuODQ4SDAuNDg5djguODYxYzAsMS4xMTEsMC45LDIuMDEyLDIuMDE2LDIuMDEyaDI0Ljk2N2MxLjExNSwwLDIuMDE2LTAuOSwyLjAxNi0yLjAxMgogICAgICAgIHYtOC44NjFIMjUuNDYyeiIvPgogICAgPHBhdGggZD0iTTE0LjYyLDE4LjQyNmwtNS43NjQtNi45NjVjMCwwLTAuODc3LTAuODI4LDAuMDc0LTAuODI4czMuMjQ4LDAsMy4yNDgsMHMwLTAuNTU3LDAtMS40MTZjMC0yLjQ0OSwwLTYuOTA2LDAtOC43MjMKICAgICAgICBjMCwwLTAuMTI5LTAuNDk0LDAuNjE1LTAuNDk0YzAuNzUsMCw0LjAzNSwwLDQuNTcyLDBjMC41MzYsMCwwLjUyNCwwLjQxNiwwLjUyNCwwLjQxNmMwLDEuNzYyLDAsNi4zNzMsMCw4Ljc0MgogICAgICAgIGMwLDAuNzY4LDAsMS4yNjYsMCwxLjI2NnMxLjg0MiwwLDIuOTk4LDBjMS4xNTQsMCwwLjI4NSwwLjg2NywwLjI4NSwwLjg2N3MtNC45MDQsNi41MS01LjU4OCw3LjE5MwogICAgICAgIEMxNS4wOTIsMTguOTc5LDE0LjYyLDE4LjQyNiwxNC42MiwxOC40MjZ6Ii8+CjwvZz4KPC9zdmc+Cg==");
+    background-size: contain;
+    display: inline-block;
+    width: 2ch;
+    height: 1.5ch;
+    background-repeat: no-repeat;
+    margin-right: 0.5ch;
+    top: 1px;
+    position: relative;
+}
 </style>
 <div class=outer>
 <div id=blocks class=inner>
