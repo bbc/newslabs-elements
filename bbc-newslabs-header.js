@@ -287,7 +287,6 @@ div.proto{
     _color: white;
 }
 span.buttons{
-    float: right;
     position: relative;
 }
 button{
