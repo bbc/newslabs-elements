@@ -432,6 +432,7 @@ button[download]::before{
         if (window?.location?.hostname?.includes('localhost') || window?.location?.hostname?.includes('test')) {
             this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
         }
+        document.title = this.app
     }
 
     _helpon() {
