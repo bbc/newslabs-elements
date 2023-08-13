@@ -470,6 +470,7 @@ button[download]::before{
                 this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
             } else if (name == 'app') {
                 this.shadowRoot.getElementById('app').innerHTML = this.app
+		document.title = this.app
             } else if (name.slice(0,4) == 'help') {
                 this._helpon()
             } else if (name == 'matomo_siteid') {
