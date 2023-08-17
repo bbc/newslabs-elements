@@ -42,6 +42,6 @@
     cursor: default;
 }
 
-[gel]nav button:first-child{
+[gel] nav button:first-child{
     margin-left: 0;
 }
