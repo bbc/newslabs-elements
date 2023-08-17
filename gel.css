@@ -41,3 +41,7 @@
     opacity: 0.4;
     cursor: default;
 }
+
+[gel]nav button:first-child{
+    margin-left: 0;
+}
