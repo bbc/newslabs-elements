@@ -474,7 +474,7 @@ button[download]::before{
 		document.title = this.app
             } else if (name.slice(0,4) == 'help') {
                 this._helpon()
-            } else if (name == 'matomo_siteid') {
+            } else if (name.includes('matomo_')) {
                 this._enable_matomo()
             } else if (name == 'backgroundcolor') {
                 this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
