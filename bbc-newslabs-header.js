@@ -474,7 +474,7 @@ button[download]::before{
 		document.title = this.app
             } else if (name.slice(0,4) == 'help') {
                 this._helpon()
-            } else if (name == 'matomo_siteid') {
+            } else if (name.includes('matomo_')) {
                 this._enable_matomo()
             } else if (name == 'backgroundcolor') {
                 this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
@@ -512,6 +512,9 @@ button[download]::before{
     get matomo_siteid() { return this.getAttribute('matomo_siteid') }
     set matomo_siteid(v) { this.setAttribute('matomo_siteid', v) }
 
+    get matomo_env() { return this.getAttribute('matomo_env') }
+    set matomo_env(v) { this.setAttribute('matomo_env', v) }
+
     get backgroundcolor() { return this.getAttribute('backgroundcolor') }
     set backgroundcolor(v) { this.setAttribute('backgroundcolor', v) }
 
@@ -535,17 +538,18 @@ button[download]::before{
             'userid',
             'userinfo',
             'matomo_siteid',
+            'matomo_env',
             'backgroundcolor',
         ]
     }
-	
+
     _enable_matomo() {
         if (!this?.matomo_siteid) return
         if (!window?.bbc?.userinfo?.email) return
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
         let _paq = window._paq = window._paq || [];
         const userinfo = window.bbc.userinfo
-        const matomoUrl = 'https://newslabs-analytics.tools.bbc.co.uk/'
+        const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
