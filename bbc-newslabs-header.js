@@ -543,7 +543,26 @@ button[download]::before{
         ]
     }
 
-    _enable_matomo() {
+    async _enable_matomo() {
+        // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
+        let matomo_url = location.origin + '/';
+        if (matomo_url.includes('newslabs.co')) {
+            const app_url = location.pathname.split('/')[1];  // defaults to using just the first portion of the path - e.g. /audiogram/editor/g-u-i-d returns audiogram
+            matomo_url += app_url;
+        }
+        let na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
+        if (matomo_url.includes('test.newslabs.co')) {
+            na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
+	}
+        const req_url = `${na_host}/matomo.php?newslabs.sites&checkUrl=${matomo_url}`;
+        let retval;
+        try {
+            console.log(`fetch ${req_url}`);
+            const req = await fetch(req_url);
+            retval = await req.json();
+            console.log({retval});
+        } catch (error) {}
+
         if (!this?.matomo_siteid) return
         if (!window?.bbc?.userinfo?.email) return
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
