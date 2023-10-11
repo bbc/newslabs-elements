@@ -558,6 +558,7 @@ button[download]::before{
             na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
         } else {
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
+            this.matomo_env = 'test';
         }
         const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}`;
         let retval;
@@ -594,10 +595,15 @@ button[download]::before{
             console.log('_enable_matomo: no email');
             return;
         }
-        console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
+        if (Matomo?.getAsyncTrackers().length > 0) {
+            const t = Matomo.getAsyncTracker(0);
+            console.warning(`A Matomo tracker already exists!\n  ${t.getTrackerUrl()}\n  ${t.getUserId()}`);
+            return;
+        }
+        const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
+        console.log(`Enabling Matomo for matomoUrl:${matomoUrl} siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
         let _paq = window._paq = window._paq || [];
         const userinfo = window.bbc.userinfo
-        const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
