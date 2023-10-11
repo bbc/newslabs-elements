@@ -566,6 +566,7 @@ button[download]::before{
             const req = await fetch(req_url);
             retval = await req.json();
             console.log({retval});
+		/*
             if (retval?.result?.status == 200) {
                 if (!this?.matomo_siteid) {
                     console.log(`200: set matomo_siteid=${retval?.result?.matomo_siteid}`);
@@ -580,6 +581,7 @@ button[download]::before{
             } else {
                 console.error(`404: ${retval?.result?.error?.reason} this.matomo_siteid=${this?.matomo_siteid}`);
             }
+	    */
         } catch (error) {
             console.error({error});		
         }
