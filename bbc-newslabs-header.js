@@ -340,6 +340,21 @@ button[download]::before{
 </div>
 <div class="proto">BETA</div>
 `
+    }
+
+    fetchError(resp) {
+        if (!resp.ok) {
+            throw Error(resp.statusText)
+        }
+        return resp
+    }
+
+    get parent() {
+        return this.getRootNode().host
+    }
+
+    connectedCallback() {
+
         if (window.location.protocol == 'https:') {
             this._discover_matomo_siteid()
             fetch('/whoami/')
@@ -410,20 +425,6 @@ button[download]::before{
                 .catch(err => { })
         }
 
-    }
-
-    fetchError(resp) {
-        if (!resp.ok) {
-            throw Error(resp.statusText)
-        }
-        return resp
-    }
-
-    get parent() {
-        return this.getRootNode().host
-    }
-
-    connectedCallback() {
         if (this.hasAttribute('help')) {
             this._helpon()
         }
