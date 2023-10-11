@@ -596,9 +596,9 @@ button[download]::before{
             console.log('_enable_matomo: no email');
             return;
         }
-        if (Matomo && Matomo?.getAsyncTrackers().length > 0) {
-            const t = Matomo.getAsyncTracker(0);
-            console.warning(`A Matomo tracker already exists!\n  ${t.getTrackerUrl()}\n  ${t.getUserId()}`);
+        if (window?.Matomo && window?.Matomo?.getAsyncTrackers().length > 0) {
+            const t = window.Matomo.getAsyncTracker(0);
+            console.warning(`A Matomo tracker already exists!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
             return;
         }
         const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
