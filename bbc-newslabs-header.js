@@ -568,7 +568,7 @@ button[download]::before{
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
             this.matomo_env = 'test';
         }
-        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}`;
+        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(document.title)}`;
         let retval;
         try {
             console.log(`fetch ${req_url}`);
@@ -596,11 +596,15 @@ button[download]::before{
 
     async _enable_matomo() {
         if (!this?.matomo_siteid) {
-            console.log('_enable_matomo: no matomo_siteid');
+            console.log('_enable_matomo: skip - no matomo_siteid');
+            return;
+        }
+        if (this.matomo_siteid == -1) {
+            console.log("_enable_matomo: skip - matomo_siteid == -1 / 'localhost' in location.origin");
             return;
         }
         if (!window?.bbc?.userinfo?.email) {
-            console.log('_enable_matomo: no email');
+            console.log('_enable_matomo: skip - no bbc.userinfo.email');
             return;
         }
         if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
