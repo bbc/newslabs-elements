@@ -604,8 +604,8 @@ button[download]::before{
             return;
         }
         if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
-            const t = window.Matomo.getAsyncTracker(0);
-            console.warning(`A Matomo tracker already exists!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
+            const t = window?.Matomo?.getAsyncTracker(0);
+            console.warn(`A Matomo tracker already exists or is in the process of construction!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
             return;
         }
         const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
