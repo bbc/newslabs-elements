@@ -596,7 +596,7 @@ button[download]::before{
             console.log('_enable_matomo: no email');
             return;
         }
-        if (window?.Matomo && window?.Matomo?.getAsyncTrackers().length > 0) {
+        if (window?._paq && window?.Matomo?.getAsyncTrackers().length > 0) {
             const t = window.Matomo.getAsyncTracker(0);
             console.warning(`A Matomo tracker already exists!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
             return;
