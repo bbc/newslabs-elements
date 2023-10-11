@@ -341,6 +341,7 @@ button[download]::before{
 <div class="proto">BETA</div>
 `
         if (window.location.protocol == 'https:') {
+            this._discover_matomo_siteid()
             fetch('/whoami/')
                 .then(this.fetchError)
                 .then(resp => resp.json())
@@ -543,7 +544,7 @@ button[download]::before{
         ]
     }
 
-    async _enable_matomo() {
+    async _discover_matomo_siteid() {
         // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
         let matomo_url = location.origin + '/';
         if (matomo_url.includes('newslabs.co')) {
@@ -553,7 +554,7 @@ button[download]::before{
         let na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
         if (matomo_url.includes('test.newslabs.co')) {
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
-	}
+        }
         const req_url = `${na_host}/matomo.php?newslabs.sites&checkUrl=${matomo_url}`;
         let retval;
         try {
@@ -563,8 +564,10 @@ button[download]::before{
             console.log({retval});
         } catch (error) {
             console.error({error});		
-	}
+        }
+    }
 
+    async _enable_matomo() {
         if (!this?.matomo_siteid) return
         if (!window?.bbc?.userinfo?.email) return
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
