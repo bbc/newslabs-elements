@@ -546,16 +546,20 @@ button[download]::before{
 
     async _discover_matomo_siteid() {
         // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
-        let matomo_url = location.origin + '/';
-        if (matomo_url.includes('newslabs.co')) {
-            const app_url = location.pathname.split('/')[1];  // defaults to using just the first portion of the path - e.g. /audiogram/editor/g-u-i-d returns audiogram
-            matomo_url += app_url;
-        }
-        let na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
-        if (matomo_url.includes('test.newslabs.co')) {
+        if (location.origin.includes('localhost')) {
+            return {
+                result: {
+                    matomo_siteid: -1
+	            }
+	        }
+	    }
+        let na_host;
+        if (!location.origin.includes('.test.')) {
+            na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
+        } else {
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
         }
-        const req_url = `${na_host}/matomo.php?newslabs.sites&checkUrl=${matomo_url}`;
+        const req_url = `${na_host}/matomo.php?newslabs.sites&location.href=${encodeURIComponent(location.href)}`;
         let retval;
         try {
             console.log(`fetch ${req_url}`);
