@@ -561,7 +561,9 @@ button[download]::before{
             const req = await fetch(req_url);
             retval = await req.json();
             console.log({retval});
-        } catch (error) {}
+        } catch (error) {
+            console.error({error});		
+	}
 
         if (!this?.matomo_siteid) return
         if (!window?.bbc?.userinfo?.email) return
