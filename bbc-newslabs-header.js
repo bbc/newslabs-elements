@@ -586,8 +586,14 @@ button[download]::before{
     }
 
     async _enable_matomo() {
-        if (!this?.matomo_siteid) return
-        if (!window?.bbc?.userinfo?.email) return
+        if (!this?.matomo_siteid) {
+            console.log('_enable_matomo: no matomo_siteid');
+            return;
+        }
+        if (!window?.bbc?.userinfo?.email) {
+            console.log('_enable_matomo: no email');
+            return;
+        }
         console.log(`Enabling Matomo for siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
         let _paq = window._paq = window._paq || [];
         const userinfo = window.bbc.userinfo
