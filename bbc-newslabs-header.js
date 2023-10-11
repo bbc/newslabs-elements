@@ -559,7 +559,7 @@ button[download]::before{
         } else {
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
         }
-        const req_url = `${na_host}/matomo.php?newslabs.sites&location.href=${encodeURIComponent(location.href)}`;
+        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}`;
         let retval;
         try {
             console.log(`fetch ${req_url}`);
