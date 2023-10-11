@@ -356,7 +356,7 @@ button[download]::before{
     connectedCallback() {
 
         if (window.location.protocol == 'https:') {
-            this._discover_matomo_siteid()
+            this._discover_matomo_siteid();
             fetch('/whoami/')
                 .then(this.fetchError)
                 .then(resp => resp.json())
@@ -364,7 +364,8 @@ button[download]::before{
                     this.userid = user.userid
                     this.userinfo = user.displayname + '\n' + user.department + '\n' + user.mail
                     window.bbc.userinfo = user
-                    fetch('/generic-apis/whois/' + user.mail)
+                    const _url = '/generic-apis/whois/' + user.mail;
+                    fetch(_url)
                         .then(this.fetchError)
                         .then(resp => resp.json())
                         .then(json => {
@@ -419,10 +420,16 @@ button[download]::before{
                                 user.displayname = json.retval.displayname
                             }
 
-                            this._enable_matomo()
+                            this._enable_matomo(); // using the advanced user data returned from /generic-apis/whois (active directory)
+                        })
+                        .catch(err => {
+                            console.error(`A ${_url} error occured`, err);
+                            this._enable_matomo(); // using the basic user data returned from /whois/ (cert|bbc-login)
                         })
                 })
-                .catch(err => { })
+                .catch(err => {
+                    console.error('A /whoami/ error occured', err);
+                })
         }
 
         if (this.hasAttribute('help')) {
