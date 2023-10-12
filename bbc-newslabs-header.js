@@ -501,10 +501,10 @@ button[download]::before{
     }
 
     get app() {
-        let app, meta
-        if ((app=this.getAttribute('app'))) return app
-        if ((meta=document.querySelector('meta[name=application-name]')) && (app=meta.getAttribute('content'))) return app
-        return ""
+        let app = this.getAttribute('app')?.trim();
+        if (app) return app;
+        app = document.querySelector('meta[name=application-name]')?.getAttribute('content')?.trim();
+        return app || '';
     }
 
     set app(v) { this.setAttribute('app', v) }
@@ -568,7 +568,7 @@ button[download]::before{
             na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
             this.matomo_env = 'test';
         }
-        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(document.title)}`;
+        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
         let retval;
         try {
             console.log(`fetch ${req_url}`);
