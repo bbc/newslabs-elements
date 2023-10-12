@@ -441,7 +441,7 @@ button[download]::before{
         if (window?.location?.hostname?.includes('localhost') || window?.location?.hostname?.includes('test')) {
             this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
         }
-        document.title = this.app
+        document.title = `BBC ${this.app}`;
     }
 
     _helpon() {
@@ -480,7 +480,7 @@ button[download]::before{
                 this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
             } else if (name == 'app') {
                 this.shadowRoot.getElementById('app').innerHTML = this.app
-		document.title = this.app
+		document.title = `BBC ${this.app}`;
             } else if (name.slice(0,4) == 'help') {
                 this._helpon()
             } else if (name.includes('matomo_')) {
