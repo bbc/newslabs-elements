@@ -100,6 +100,9 @@ main[fullwidth]{
   padding-left: 0;
   padding-right: 0;
 }
+main[show]{
+  border: 1px dashed red;
+}
 
 /* Import Reith fonts*/
 @font-face {
