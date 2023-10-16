@@ -360,9 +360,8 @@ button[download]::before{
           .then(this.fetchError)
           .then(resp => resp.json())
           .then(user => {
-            this.userid = user.userid
-            this.userinfo = `${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
             window.bbc.userinfo = user
+            this.userid = user.userid
             const _url = '/generic-apis/whois/' + user.mail;
             fetch(_url)
               .then(this.fetchError)
@@ -371,6 +370,7 @@ button[download]::before{
                 // console.info({ generic_whois: json })
                 if (json.retval.status == 'failed') {
                   console.log({ whois_failed: json.retval.reason })
+                  this.userinfo = `${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
                   return
                 }
                 window.bbc.userinfo.org = window.bbc.userinfo.org || {}
@@ -419,12 +419,12 @@ button[download]::before{
                 if (json.retval.displayname) {
                   user.displayname = json.retval.displayname
                 }
-
-                this._enable_matomo(); // using the advanced user data returned from /generic-apis/whois (active directory)
+                // this._enable_matomo(); // using the advanced user data returned from /generic-apis/whois (active directory)
               })
               .catch(err => {
                 console.error(`A ${_url} error occured`, err);
-                this._enable_matomo(); // using the basic user data returned from /whois/ (cert|bbc-login)
+                this.userinfo = `${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
+                // this._enable_matomo(); // using the basic user data returned from /whois/ (cert|bbc-login)
               })
           })
           .catch(err => {
@@ -485,7 +485,7 @@ button[download]::before{
         } else if (name.slice(0, 4) == 'help') {
           this._helpon()
         } else if (name.includes('matomo_')) {
-          this._enable_matomo()
+          // this._enable_matomo()
         } else if (name == 'backgroundcolor') {
           this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
         } else {
@@ -497,6 +497,7 @@ button[download]::before{
         }
         if (name == 'userinfo') {
           this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
+          this._enable_matomo()
         }
       }
     }
