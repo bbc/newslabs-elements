@@ -376,7 +376,7 @@ button[download]::before{
                 window.bbc.userinfo.org = window.bbc.userinfo.org || {}
                 let h = window.document.querySelector('bbc-newslabs-header')
                 h.userid = json.retval.userid
-                h.userinfo = `b:${json?.retval?.email}\n${json?.retval?.displayname}\n${json?.retval?.title}\n${json?.retval?.department}` //json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+                h.userinfo = `b:${json?.retval?.mail}\n${json?.retval?.displayname}\n${json?.retval?.title}\n${json?.retval?.department}` //json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
 
                 if (json.retval.directorate) {
                   user.org.directorate = json.retval.directorate
