@@ -361,14 +361,14 @@ button[download]::before{
           .then(resp => resp.json())
           .then(user => {
             this.userid = user.userid
-            this.userinfo = `a:${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
+            this.userinfo = `${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
             window.bbc.userinfo = user
             const _url = '/generic-apis/whois/' + user.mail;
             fetch(_url)
               .then(this.fetchError)
               .then(resp => resp.json())
               .then(json => {
-                console.info({ generic_whois: json })
+                // console.info({ generic_whois: json })
                 if (json.retval.status == 'failed') {
                   console.log({ whois_failed: json.retval.reason })
                   return
@@ -376,7 +376,7 @@ button[download]::before{
                 window.bbc.userinfo.org = window.bbc.userinfo.org || {}
                 let h = window.document.querySelector('bbc-newslabs-header')
                 h.userid = json.retval.userid
-                h.userinfo = `b:${json?.retval?.mail}\n${json?.retval?.displayname}\n${json?.retval?.title}\n${json?.retval?.department}` //json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+                h.userinfo = `${json?.retval?.mail}\n${json?.retval?.displayname}\n${json?.retval?.title}\n${json?.retval?.department}` //json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
 
                 if (json.retval.directorate) {
                   user.org.directorate = json.retval.directorate
