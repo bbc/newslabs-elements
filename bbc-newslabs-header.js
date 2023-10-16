@@ -356,13 +356,14 @@ button[download]::before{
 
       if (window.location.protocol == 'https:') {
         this._discover_matomo_siteid();
-        fetch('/whoami/')
+        const portal_host = location.origin.includes('.newslabs.co') ? location.origin : 'https://apps.newslabs.co';
+        fetch(`${portal_host}/whoami/`)
           .then(this.fetchError)
           .then(resp => resp.json())
           .then(user => {
             window.bbc.userinfo = user
             this.userid = user.userid
-            const _url = '/generic-apis/whois/' + user.mail;
+            const _url = `${portal_host}/generic-apis/whois/${user.mail}`;
             fetch(_url)
               .then(this.fetchError)
               .then(resp => resp.json())
@@ -428,7 +429,7 @@ button[download]::before{
               })
           })
           .catch(err => {
-            console.error('A /whoami/ error occured', err);
+            console.error(`A ${portal_host}/whoami/ error occured`, err);
           })
       }
 
@@ -485,7 +486,7 @@ button[download]::before{
         } else if (name.slice(0, 4) == 'help') {
           this._helpon()
         } else if (name.includes('matomo_')) {
-          // this._enable_matomo()
+          this._enable_matomo()
         } else if (name == 'backgroundcolor') {
           this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
         } else {
@@ -610,8 +611,8 @@ button[download]::before{
         console.log("_enable_matomo: skip - matomo_siteid == -1 / 'localhost' in location.origin");
         return;
       }
-      if (!window?.bbc?.userinfo?.email) {
-        console.log('_enable_matomo: skip - no bbc.userinfo.email');
+      if (!this?.userinfo) {
+        console.log('_enable_matomo: skip - no userinfo', this.userinfo);
         return;
       }
       if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
