@@ -584,16 +584,16 @@ button[download]::before{
           current_userinfo: window?.bbc?.userinfo,
         });
         if (retval?.result?.status == 200) {
-          if (!this?.matomo_siteid) {
-            console.log(`200: set matomo_siteid=${retval?.result?.matomo_siteid}`);
-            this.matomo_siteid = retval?.result?.matomo_siteid;
-            // this._enable_matomo();
-          } else {
+          if (this?.matomo_siteid) {
             console.warn(`200: matomo_siteid already configured`);
             if (this?.matomo_siteid != retval?.result?.matomo_siteid) {
               console.error(`matomo_siteids differ: html=${this?.matomo_siteid} api=${retval?.result?.matomo_siteid}. Performing override.`);
               this.matomo_siteid = retval?.result?.matomo_siteid;
             }
+          } else {
+            console.log(`200: set matomo_siteid=${retval?.result?.matomo_siteid}`);
+            this.matomo_siteid = retval?.result?.matomo_siteid;
+            // this._enable_matomo();
           }
         } else {
           console.error(`404: ${retval?.result?.error?.reason} this.matomo_siteid=${this?.matomo_siteid}`);
