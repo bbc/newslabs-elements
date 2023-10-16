@@ -466,7 +466,7 @@ button[download]::before{
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
-      console.log({ attributeChangedCallback: { ...arguments } })
+      // console.log({ attributeChangedCallback: { ...arguments } })
       if (oldvalue != newvalue) {
         if (name == 'applink') {
           const app = this.shadowRoot.querySelector('#app')
