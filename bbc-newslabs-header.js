@@ -626,7 +626,7 @@ button[download]::before{
       _paq.push(['enableLinkTracking']);
       _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
       _paq.push(['setSiteId', this.matomo_siteid]);
-      _paq.push(['setUserId', this.userinfo.replace('\n', ' / ')]);
+      _paq.push(['setUserId', this.userinfo.replaceAll('\n', ' / ')]);
       let d = document,
         g = d.createElement('script'),
         s = d.getElementsByTagName('script')[0];
