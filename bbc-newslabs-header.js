@@ -589,9 +589,10 @@ button[download]::before{
             this.matomo_siteid = retval?.result?.matomo_siteid;
             // this._enable_matomo();
           } else {
-            console.log(`200: matomo_siteid already configured`);
+            console.warn(`200: matomo_siteid already configured`);
             if (this?.matomo_siteid != retval?.result?.matomo_siteid) {
-              console.error(`matomo_siteids differ: html=${this?.matomo_siteid} api=${retval?.result?.matomo_siteid}`);
+              console.error(`matomo_siteids differ: html=${this?.matomo_siteid} api=${retval?.result?.matomo_siteid}. Performing override.`);
+              this.matomo_siteid = retval?.result?.matomo_siteid;
             }
           }
         } else {
