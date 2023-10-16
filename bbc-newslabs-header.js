@@ -1,162 +1,161 @@
 (function () {
 
-    // Mobile friendly page
-    if (document.querySelectorAll('meta[name=viewport]').length == 0) {
-        const m = document.createElement('meta')
-        m.name = 'viewport'
-        m.content = 'width=device-width, initial-scale=1'
-        document.querySelector('head').appendChild(m)
+  // Mobile friendly page
+  if (document.querySelectorAll('meta[name=viewport]').length == 0) {
+    const m = document.createElement('meta')
+    m.name = 'viewport'
+    m.content = 'width=device-width, initial-scale=1'
+    document.querySelector('head').appendChild(m)
+  }
+
+  window.bbc = window.bbc || {}
+
+  // An Event Bus.
+  // Used to send messages between distinct components on a page, regardless of component technology used.
+  // - https://pineco.de/creating-a-javascript-event-bus/ (general concept)
+  // - https://stackoverflow.com/a/34418446/7656091 : private data (bus inside the constructor method), and public methods (also inside the constructor, but prefixed with this.)
+  bbc.EventBus = new class {
+    constructor() {
+      const bus = document.createElement('Newslabs-EventBus')
+      this.addEventListener = function (event, callback) {
+        bus.addEventListener(event, callback)
+      }
+      this.removeEventListener = function (event, callback) {
+        bus.removeEventListener(event, callback)
+      }
+      this.dispatchEvent = function (event, detail = {}) {
+        bus.dispatchEvent(new CustomEvent(event, { detail }))
+      }
     }
+  }
 
-    window.bbc = window.bbc || {}
-
-    // An Event Bus.
-    // Used to send messages between distinct components on a page, regardless of component technology used.
-    // - https://pineco.de/creating-a-javascript-event-bus/ (general concept)
-    // - https://stackoverflow.com/a/34418446/7656091 : private data (bus inside the constructor method), and public methods (also inside the constructor, but prefixed with this.)
-    bbc.EventBus = new class {
-        constructor() {
-            const bus = document.createElement('Newslabs-EventBus')
-            this.addEventListener = function(event, callback) {
-                bus.addEventListener(event, callback)
-            }
-            this.removeEventListener = function(event, callback) {
-                bus.removeEventListener(event, callback)
-            }
-            this.dispatchEvent = function(event, detail = {}) {
-                bus.dispatchEvent(new CustomEvent(event, {detail}))
-            }
-        }
+  // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
+  bbc.addDependentScripts = async function (scriptsToAdd, immediate = false) {
+    const s = document.createElement('script')
+    for (var i = 0; i < scriptsToAdd.length; i++) {
+      let r = await fetch(scriptsToAdd[i])
+      s.text += await r.text()
     }
+    if (immediate) {
+      document.querySelector('head').appendChild(s)
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('body').appendChild(s)
+      })
+    }
+  }
 
-    // Dynamic JS dependency-stack injection - https://stackoverflow.com/a/62969633/7656091
-    bbc.addDependentScripts = async function (scriptsToAdd, immediate=false) {
-        const s = document.createElement('script')
-        for (var i = 0; i < scriptsToAdd.length; i++) {
-            let r = await fetch(scriptsToAdd[i])
-            s.text += await r.text()
+  // Usage: div.textContent = bbc.timeSince(new Date(document.lastModified)); - specific date object
+  // or     div.textContent = bbc.timeSince(document.lastModified); - well-formed string that Date can recognise.
+  bbc.timeSince = function (value) {
+    const intervals = [
+      { label: 'year', seconds: 31536000 },
+      { label: 'month', seconds: 2592000 },
+      { label: 'day', seconds: 86400 },
+      { label: 'hour', seconds: 3600 },
+      { label: 'minute', seconds: 60 },
+      { label: 'second', seconds: 0 }
+    ];
+    let date;
+    if (typeof (value) == 'string') {
+      date = new Date(value);
+    } else {
+      date = value; // assume a date object has been passed
+    }
+    const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
+    const interval = intervals.find(i => i.seconds < seconds);
+    let count = Math.floor(seconds / interval.seconds);
+    if (count == Infinity) count = seconds;
+    //console.log({seconds, interval, count});
+    return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
+  }
+
+  // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
+  bbc.onReith = function (onReithCB, offReithCB) {
+    if (typeof (onReithCB) !== 'function') {
+      console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
+      return
+    }
+    let xhr = new XMLHttpRequest()
+    let check = 'https://onreith.labs.jupiter.bbc.co.uk/'
+    xhr.timeout = 5000
+    xhr.open('HEAD', check, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status !== 200) {
+          console.log('bbc.onReith: false')
+          if (typeof (offReithCB) === 'function') {
+            offReithCB()
+          }
         }
-        if (immediate) {
-            document.querySelector('head').appendChild(s)
+        if (xhr.status === 200) {
+          console.log('bbc.onReith: true')
+          onReithCB()
+        }
+      }
+    }
+    xhr.send()
+  }
+
+  // add selected core files to all pages
+  let filesToAdd = []
+
+  // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap>
+  // Here, order is important as Bootstrap depends on JQuery
+  if (document.querySelector('html').classList.contains('newslabs-bootstrap')) {
+    filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
+    filesToAdd.push('https://code.jquery.com/jquery-3.5.1.slim.min.js')
+    filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
+  }
+
+  // newslabs analyics
+
+  // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
+  filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
+
+  let jsToAdd = []
+
+  const firstCSSNode = document.querySelector('link[rel=stylesheet]')
+  let firstCSS = false
+
+  filesToAdd.forEach(url => {
+    let n = -1
+    let x = url.split('.')
+    let ext = x[x.length - 1]
+    if (ext == 'css') n = document.querySelectorAll('link[href*="' + url + '"]').length
+    if (ext == 'js') n = document.querySelectorAll('script[src*="' + url + '"]').length
+    if (n == 0) {
+      let e = null
+      if (ext == 'css') {
+        e = document.createElement('link')
+        e.rel = 'stylesheet'
+        e.href = url
+        if (firstCSS === false) {
+          if (firstCSSNode !== null) {
+            firstCSS = firstCSSNode.parentNode.insertBefore(e, firstCSSNode)
+          } else {
+            firstCSS = document.querySelector('head').appendChild(e)
+          }
         } else {
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelector('body').appendChild(s)
-            })
+          firstCSS.after(e)
         }
+      }
+      if (ext == 'js') {
+        jsToAdd.push(url)
+      }
     }
+  })
 
-    // Usage: div.textContent = bbc.timeSince(new Date(document.lastModified)); - specific date object
-    // or     div.textContent = bbc.timeSince(document.lastModified); - well-formed string that Date can recognise.
-    bbc.timeSince = function (value) {
-        const intervals = [
-            { label: 'year', seconds: 31536000 },
-            { label: 'month', seconds: 2592000 },
-            { label: 'day', seconds: 86400 },
-            { label: 'hour', seconds: 3600 },
-            { label: 'minute', seconds: 60 },
-            { label: 'second', seconds: 0 }
-        ];
-        let date;
-        if (typeof(value) == 'string') {
-            date = new Date(value);
-        } else {
-            date = value; // assume a date object has been passed
-        }
-        const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
-        const interval = intervals.find(i => i.seconds < seconds);
-        let count = Math.floor(seconds / interval.seconds);
-        if (count == Infinity) count = seconds;
-        //console.log({seconds, interval, count});
-        return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
-    }
-
-    // Checks if we can see Reith - i.e. ZScaler is on or a VPN is up
-    bbc.onReith = function (onReithCB, offReithCB) {
-        if (typeof (onReithCB) !== 'function') {
-            console.log('Usage: bbc.onReith(fn1, [fn2]) where fn1=onReithCallback, fn2=offReithCallback')
-            return
-        }
-        let xhr = new XMLHttpRequest()
-        let check = 'https://onreith.labs.jupiter.bbc.co.uk/'
-        xhr.timeout = 5000
-        xhr.open('HEAD', check, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status !== 200) {
-                    console.log('bbc.onReith: false')
-                    if (typeof (offReithCB) === 'function') {
-                        offReithCB()
-                    }
-                }
-                if (xhr.status === 200) {
-                    console.log('bbc.onReith: true')
-                    onReithCB()
-                }
-            }
-        }
-        xhr.send()
-    }
-
-    // add selected core files to all pages
-    let filesToAdd = []
-
-    // Optional bootstrap. To activate, add this class to the html node: <html class=newslabs-bootstrap> 
-    // Here, order is important as Bootstrap depends on JQuery
-    if (document.querySelector('html').classList.contains('newslabs-bootstrap')) {
-        filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
-        filesToAdd.push('https://code.jquery.com/jquery-3.5.1.slim.min.js')
-        filesToAdd.push('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
-    }
-
-    // newslabs analyics
-    
-    // Our own additions. css and js files are supported, creating <link rel=stylesheet> or <script> as appropriate.
-    filesToAdd.push('https://bbc.github.io/newslabs-elements/core.css')
-
-    let jsToAdd = []
-
-    const firstCSSNode = document.querySelector('link[rel=stylesheet]')
-    let firstCSS = false
-
-    filesToAdd.forEach(url => {
-        let n = -1
-        let x = url.split('.')
-        let ext = x[x.length - 1]
-        if (ext == 'css') n = document.querySelectorAll('link[href*="' + url + '"]').length
-        if (ext == 'js') n = document.querySelectorAll('script[src*="' + url + '"]').length
-        if (n == 0) {
-            let e = null
-            if (ext == 'css') {
-                e = document.createElement('link')
-                e.rel = 'stylesheet'
-                e.href = url
-                if (firstCSS === false) {
-                    if (firstCSSNode !== null) {
-                        firstCSS = firstCSSNode.parentNode.insertBefore(e, firstCSSNode)
-                    } else {
-                        firstCSS = document.querySelector('head').appendChild(e)
-                    }
-                } else {
-                    firstCSS.after(e)
-                }
-            }
-            if (ext == 'js') {
-                jsToAdd.push(url)
-            }
-        }
-    })
-
-    bbc.addDependentScripts(jsToAdd)
+  bbc.addDependentScripts(jsToAdd)
 })()
 
 customElements.define(
-    'bbc-newslabs-header',
-    class extends HTMLElement
-{
+  'bbc-newslabs-header',
+  class extends HTMLElement {
     constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.innerHTML = `
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoot.innerHTML = `
 <style>
 @import "https://bbc.github.io/newslabs-elements/core.css";
 :host(bbc-newslabs-header) {
@@ -343,168 +342,169 @@ button[download]::before{
     }
 
     fetchError(resp) {
-        if (!resp.ok) {
-            throw Error(resp.statusText)
-        }
-        return resp
+      if (!resp.ok) {
+        throw Error(resp.statusText)
+      }
+      return resp
     }
 
     get parent() {
-        return this.getRootNode().host
+      return this.getRootNode().host
     }
 
     connectedCallback() {
 
-        if (window.location.protocol == 'https:') {
-            this._discover_matomo_siteid();
-            fetch('/whoami/')
-                .then(this.fetchError)
-                .then(resp => resp.json())
-                .then(user => {
-                    this.userid = user.userid
-                    this.userinfo = user.displayname + '\n' + user.department + '\n' + user.mail
-                    window.bbc.userinfo = user
-                    const _url = '/generic-apis/whois/' + user.mail;
-                    fetch(_url)
-                        .then(this.fetchError)
-                        .then(resp => resp.json())
-                        .then(json => {
-                            if (json.retval.status == 'failed') {
-                                console.log({whois_failed: json.retval.reason})
-                                return
-                            }
-                            window.bbc.userinfo.org = window.bbc.userinfo.org || {}
-                            let h = window.document.querySelector('bbc-newslabs-header')
-                            h.userid = json.retval.userid
-                            h.userinfo = json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
+      if (window.location.protocol == 'https:') {
+        this._discover_matomo_siteid();
+        fetch('/whoami/')
+          .then(this.fetchError)
+          .then(resp => resp.json())
+          .then(user => {
+            this.userid = user.userid
+            this.userinfo = `${user?.email}\n${user?.displayname}\n${user?.title}\n${user?.department}` // user.displayname + '\n' + user.department + '\n' + user.mail
+            window.bbc.userinfo = user
+            const _url = '/generic-apis/whois/' + user.mail;
+            fetch(_url)
+              .then(this.fetchError)
+              .then(resp => resp.json())
+              .then(json => {
+                if (json.retval.status == 'failed') {
+                  console.log({ whois_failed: json.retval.reason })
+                  return
+                }
+                window.bbc.userinfo.org = window.bbc.userinfo.org || {}
+                let h = window.document.querySelector('bbc-newslabs-header')
+                h.userid = json.retval.userid
+                h.userinfo = `${json?.retval?.email}\n${json?.retval?.displayname}\n${json?.retval?.title}\n${json?.retval?.department}` //json.retval.displayname + '\n' + json.retval.department + '\n' + json.retval.mail
 
-                            if (json.retval.directorate) {
-                                user.org.directorate = json.retval.directorate
-                            }
+                if (json.retval.directorate) {
+                  user.org.directorate = json.retval.directorate
+                }
 
-                            if (json.retval.division) {
-                                user.org.division = json.retval.division
-                                user.division = json.retval.division
-                            }
+                if (json.retval.division) {
+                  user.org.division = json.retval.division
+                  user.division = json.retval.division
+                }
 
-                            if (json.retval.department) {
-                                user.department = json.retval.department
-                                user.org.department = json.retval.department
-                            }
+                if (json.retval.department) {
+                  user.department = json.retval.department
+                  user.org.department = json.retval.department
+                }
 
-                            if (json.retval.building) {
-                                user.org.building = json.retval.building
-                            }
+                if (json.retval.building) {
+                  user.org.building = json.retval.building
+                }
 
-                            if (json.retval.room) {
-                                user.org.room = json.retval.room
-                            }
+                if (json.retval.room) {
+                  user.org.room = json.retval.room
+                }
 
-                            if (json.retval.groups) {
-                                user.groups = json.retval.groups
-                            }
+                if (json.retval.groups) {
+                  user.groups = json.retval.groups
+                }
 
-                            if (json.retval.title) {
-                                user.title = json.retval.title
-                            }
+                if (json.retval.title) {
+                  user.title = json.retval.title
+                }
 
-                            if (json.retval.costcentre) {
-                                user.org.cost_code = json.retval.costcentre
-                            }
+                if (json.retval.costcentre) {
+                  user.org.cost_code = json.retval.costcentre
+                }
 
-                            if (json.retval.userid) {
-                                user.userid = json.retval.userid
-                            }
+                if (json.retval.userid) {
+                  user.userid = json.retval.userid
+                }
 
-                            if (json.retval.displayname) {
-                                user.displayname = json.retval.displayname
-                            }
+                if (json.retval.displayname) {
+                  user.displayname = json.retval.displayname
+                }
 
-                            this._enable_matomo(); // using the advanced user data returned from /generic-apis/whois (active directory)
-                        })
-                        .catch(err => {
-                            console.error(`A ${_url} error occured`, err);
-                            this._enable_matomo(); // using the basic user data returned from /whois/ (cert|bbc-login)
-                        })
-                })
-                .catch(err => {
-                    console.error('A /whoami/ error occured', err);
-                })
-        }
+                this._enable_matomo(); // using the advanced user data returned from /generic-apis/whois (active directory)
+              })
+              .catch(err => {
+                console.error(`A ${_url} error occured`, err);
+                this._enable_matomo(); // using the basic user data returned from /whois/ (cert|bbc-login)
+              })
+          })
+          .catch(err => {
+            console.error('A /whoami/ error occured', err);
+          })
+      }
 
-        if (this.hasAttribute('help')) {
-            this._helpon()
-        }
-        if (this.hasAttribute('beta')) {
-            this.shadowRoot.querySelector('.proto').style.display='inline-block'
-        }
-        if (window?.location?.hostname?.includes('localhost') || window?.location?.hostname?.includes('test')) {
-            this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
-        }
-        document.title = `BBC ${this.app}`;
+      if (this.hasAttribute('help')) {
+        this._helpon()
+      }
+      if (this.hasAttribute('beta')) {
+        this.shadowRoot.querySelector('.proto').style.display = 'inline-block'
+      }
+      if (window?.location?.hostname?.includes('localhost') || window?.location?.hostname?.includes('test')) {
+        this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
+      }
+      document.title = `BBC ${this.app}`;
     }
 
     _helpon() {
-        if (this.help.length < 3) return
-        const h = this.shadowRoot.getElementById('help')
-        h.setAttribute('active', 'active')
-        h.addEventListener('click', evt => {
-            if (this.help[0] == '#') {
-                window.location.hash = this.help
-            }
-            else {
-                window.location.href = this.help
-            }
-        })
-        if (this?.helptext) {
-          h.setAttribute('text', this.helptext)
+      if (this.help.length < 3) return
+      const h = this.shadowRoot.getElementById('help')
+      h.setAttribute('active', 'active')
+      h.addEventListener('click', evt => {
+        if (this.help[0] == '#') {
+          window.location.hash = this.help
         }
-        if (this?.helptitle) {
-          h.setAttribute('title', this.helptitle)
+        else {
+          window.location.href = this.help
         }
+      })
+      if (this?.helptext) {
+        h.setAttribute('text', this.helptext)
+      }
+      if (this?.helptitle) {
+        h.setAttribute('title', this.helptitle)
+      }
     }
 
     attributeChangedCallback(name, oldvalue, newvalue) {
-        if (oldvalue != newvalue) {
-            if (name == 'applink') {
-                const app = this.shadowRoot.querySelector('#app')
-                app.setAttribute('title', 'Open ' + newvalue)
-                app.addEventListener('click', evt => {
-                    // support applink="${location.pathname}"
-                    let href = newvalue
-                    if (href.includes('${') && href.includes('}')) {
-                        href = eval("`" + href + "`")
-                    }
-                    window.location.href = href
-                })
-                this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
-            } else if (name == 'app') {
-                this.shadowRoot.getElementById('app').innerHTML = this.app
-		document.title = `BBC ${this.app}`;
-            } else if (name.slice(0,4) == 'help') {
-                this._helpon()
-            } else if (name.includes('matomo_')) {
-                this._enable_matomo()
-            } else if (name == 'backgroundcolor') {
-                this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
-            } else {
-                const node = this.shadowRoot.getElementById(name)
-                if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
+      console.log({ attributeChangedCallback: { ...arguments } })
+      if (oldvalue != newvalue) {
+        if (name == 'applink') {
+          const app = this.shadowRoot.querySelector('#app')
+          app.setAttribute('title', 'Open ' + newvalue)
+          app.addEventListener('click', evt => {
+            // support applink="${location.pathname}"
+            let href = newvalue
+            if (href.includes('${') && href.includes('}')) {
+              href = eval("`" + href + "`")
             }
-            if (name == 'userid') {
-                this.shadowRoot.getElementById('userinfo').style.display = 'inline-block'
-            }
-            if (name == 'userinfo') {
-                this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
-            }
+            window.location.href = href
+          })
+          this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
+        } else if (name == 'app') {
+          this.shadowRoot.getElementById('app').innerHTML = this.app
+          document.title = `BBC ${this.app}`;
+        } else if (name.slice(0, 4) == 'help') {
+          this._helpon()
+        } else if (name.includes('matomo_')) {
+          this._enable_matomo()
+        } else if (name == 'backgroundcolor') {
+          this.shadowRoot.querySelector('.outer').style.backgroundColor = newvalue
+        } else {
+          const node = this.shadowRoot.getElementById(name)
+          if (name != 'userinfo' && typeof (node) !== "undefined") node.innerHTML = newvalue
         }
+        if (name == 'userid') {
+          this.shadowRoot.getElementById('userinfo').style.display = 'inline-block'
+        }
+        if (name == 'userinfo') {
+          this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
+        }
+      }
     }
 
     get app() {
-        let app = this.getAttribute('app')?.trim();
-        if (app) return app;
-        app = document.querySelector('meta[name=application-name]')?.getAttribute('content')?.trim();
-        return app || '';
+      let app = this.getAttribute('app')?.trim();
+      if (app) return app;
+      app = document.querySelector('meta[name=application-name]')?.getAttribute('content')?.trim();
+      return app || '';
     }
 
     set app(v) { this.setAttribute('app', v) }
@@ -540,93 +540,98 @@ button[download]::before{
     set helptitle(v) { this.setAttribute('helptitle', v) }
 
     static get observedAttributes() {
-        return [
-            'app',
-            'applink',
-            'subtitle',
-            'userid',
-            'userinfo',
-            'matomo_siteid',
-            'matomo_env',
-            'backgroundcolor',
-        ]
+      return [
+        'app',
+        'applink',
+        'subtitle',
+        'userid',
+        'userinfo',
+        'matomo_siteid',
+        'matomo_env',
+        'backgroundcolor',
+      ]
     }
 
     async _discover_matomo_siteid() {
-        // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
-        if (location.origin.includes('localhost')) {
-            return {
-                result: {
-                    matomo_siteid: -1
-	            }
-	        }
-	    }
-        let na_host;
-        if (!location.origin.includes('.test.')) {
-            na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
-        } else {
-            na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
-            this.matomo_env = 'test';
+      // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
+      if (location.origin.includes('localhost')) {
+        return {
+          result: {
+            matomo_siteid: -1
+          }
         }
-        const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
-        let retval;
-        try {
-            console.log(`fetch ${req_url}`);
-            const req = await fetch(req_url);
-            retval = await req.json();
-            console.log({retval});
-            if (retval?.result?.status == 200) {
-                if (!this?.matomo_siteid) {
-                    console.log(`200: set matomo_siteid=${retval?.result?.matomo_siteid}`);
-                    this.matomo_siteid = retval?.result?.matomo_siteid;
-                    this._enable_matomo();
-                } else {
-                    console.log(`200: matomo_siteid already configured`);
-                    if (this?.matomo_siteid != retval?.result?.matomo_siteid) {
-                        console.error(`matomo_siteids differ: html=${this?.matomo_siteid} api=${retval?.result?.matomo_siteid}`);
-                    }
-                }
-            } else {
-                console.error(`404: ${retval?.result?.error?.reason} this.matomo_siteid=${this?.matomo_siteid}`);
+      }
+      let na_host;
+      if (!location.origin.includes('.test.')) {
+        na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
+        this.matomo_env = 'live';
+      } else {
+        na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
+        this.matomo_env = 'test';
+      }
+      const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
+      let retval;
+      try {
+        console.log(`fetch ${req_url}`);
+        const req = await fetch(req_url);
+        retval = await req.json();
+        console.log({
+          retval,
+          current_siteid: this.matomo_siteid,
+          current_userinfo: window?.bbc?.userinfo,
+        });
+        if (retval?.result?.status == 200) {
+          if (!this?.matomo_siteid) {
+            console.log(`200: set matomo_siteid=${retval?.result?.matomo_siteid}`);
+            this.matomo_siteid = retval?.result?.matomo_siteid;
+            // this._enable_matomo();
+          } else {
+            console.log(`200: matomo_siteid already configured`);
+            if (this?.matomo_siteid != retval?.result?.matomo_siteid) {
+              console.error(`matomo_siteids differ: html=${this?.matomo_siteid} api=${retval?.result?.matomo_siteid}`);
             }
-        } catch (error) {
-            console.error({error});		
+          }
+        } else {
+          console.error(`404: ${retval?.result?.error?.reason} this.matomo_siteid=${this?.matomo_siteid}`);
         }
+      } catch (error) {
+        console.error({ error });
+      }
     }
 
     async _enable_matomo() {
-        if (!this?.matomo_siteid) {
-            console.log('_enable_matomo: skip - no matomo_siteid');
-            return;
-        }
-        if (this.matomo_siteid == -1) {
-            console.log("_enable_matomo: skip - matomo_siteid == -1 / 'localhost' in location.origin");
-            return;
-        }
-        if (!window?.bbc?.userinfo?.email) {
-            console.log('_enable_matomo: skip - no bbc.userinfo.email');
-            return;
-        }
-        if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
-            const t = window?.Matomo?.getAsyncTracker(0);
-            console.warn(`A Matomo tracker already exists or is in the process of construction!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
-            return;
-        }
-        const matomoUrl = (this?.matomo_env && this?.matomo_env.toLowerCase()==='test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
-        console.log(`Enabling Matomo for matomoUrl:${matomoUrl} siteId:${this.matomo_siteid} email:${window.bbc.userinfo.email}`)
-        let _paq = window._paq = window._paq || [];
-        const userinfo = window.bbc.userinfo
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
-        _paq.push(['setSiteId', this.matomo_siteid]);
-        _paq.push(['setUserId', `${userinfo.email} / ${userinfo.displayname} / ${userinfo.title} / ${userinfo.department}`]);
-        let d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.src = matomoUrl + 'matomo.js';
-        s.parentNode.insertBefore(g, s);
+      if (!this?.matomo_siteid) {
+        console.log('_enable_matomo: skip - no matomo_siteid');
+        return;
+      }
+      if (this.matomo_siteid == -1) {
+        console.log("_enable_matomo: skip - matomo_siteid == -1 / 'localhost' in location.origin");
+        return;
+      }
+      if (!window?.bbc?.userinfo?.email) {
+        console.log('_enable_matomo: skip - no bbc.userinfo.email');
+        return;
+      }
+      if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
+        const t = window?.Matomo?.getAsyncTracker(0);
+        console.warn(`A Matomo tracker already exists or is in the process of construction!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
+        return;
+      }
+      const matomoUrl = (this?.matomo_env.toLowerCase() === 'test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
+      console.log(`Enabling Matomo for matomoUrl:${matomoUrl} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
+      let _paq = window._paq = window._paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
+      _paq.push(['setSiteId', this.matomo_siteid]);
+      _paq.push(['setUserId', this.userinfo.replace('\n', ' / ')]);
+      let d = document,
+        g = d.createElement('script'),
+        s = d.getElementsByTagName('script')[0];
+      g.type = 'text/javascript';
+      g.async = true;
+      g.src = matomoUrl + 'matomo.js';
+      s.parentNode.insertBefore(g, s);
     }
-})
+  }
+)
