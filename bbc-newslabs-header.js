@@ -480,6 +480,8 @@ button[download]::before{
             window.location.href = href
           })
           this.shadowRoot.querySelector('div.outer').setAttribute(name, name)
+        } else if (name === 'applinkcolour') {
+          this.shadowRoot.querySelector('.outer').style = `--nl-red:${this.applinkcolour}`;
         } else if (name == 'app') {
           this.shadowRoot.getElementById('app').innerHTML = this.app
           document.title = `BBC ${this.app}`;
@@ -515,6 +517,9 @@ button[download]::before{
     get applink() { return this.getAttribute('applink') }
     set applink(v) { this.setAttribute('applink', v) }
 
+    get applinkcolour() { return this.getAttribute('applinkcolour') }
+    set applinkcolour(v) { this.setAttribute('applinkcolour', v) }
+
     get userid() { return this.getAttribute('userid') }
     set userid(v) { this.setAttribute('userid', v) }
 
@@ -546,6 +551,7 @@ button[download]::before{
       return [
         'app',
         'applink',
+        'applinkcolour',
         'subtitle',
         'userid',
         'userinfo',
