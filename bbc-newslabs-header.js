@@ -563,12 +563,9 @@ button[download]::before{
 
     async _discover_matomo_siteid() {
       // attempt to locate a pre-configured matomo_siteid in the appropriate Matomo env
-      if (location.origin.includes('localhost')) {
-        return {
-          result: {
-            matomo_siteid: -1
-          }
-        }
+      if (location.origin.toLowerCase().includes('localhost')) {
+        this.matomo_siteid = -1;
+        return
       }
       let na_host;
       if (!location.origin.includes('.test.')) {
