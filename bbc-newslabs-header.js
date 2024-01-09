@@ -564,6 +564,7 @@ button[download]::before{
         'userinfo',
         'matomo_siteid',
         'matomo_env',
+        'matomo_url',
         'backgroundcolor',
       ]
     }
@@ -630,12 +631,11 @@ button[download]::before{
         console.warn(`A Matomo tracker already exists or is in the process of construction!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
         return;
       }
-      const matomoUrl = (this?.matomo_env.toLowerCase() === 'test') ? 'https://newslabs-analytics.test.tools.bbc.co.uk/' : 'https://newslabs-analytics.tools.bbc.co.uk/'
-      console.log(`Enabling Matomo for matomoUrl:${matomoUrl} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
+      console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
       let _paq = window._paq = window._paq || [];
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
-      _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
+      _paq.push(['setTrackerUrl', this.matomo_url + '/matomo.php']);
       _paq.push(['setSiteId', this.matomo_siteid]);
       _paq.push(['setUserId', this.userinfo.replaceAll('\n', ' / ')]);
       let d = document,
@@ -643,7 +643,7 @@ button[download]::before{
         s = d.getElementsByTagName('script')[0];
       g.type = 'text/javascript';
       g.async = true;
-      g.src = matomoUrl + 'matomo.js';
+      g.src = this.matomo_url + '/matomo.js';
       s.parentNode.insertBefore(g, s);
     }
   }
