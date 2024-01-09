@@ -536,6 +536,9 @@ button[download]::before{
     get matomo_env() { return this.getAttribute('matomo_env') }
     set matomo_env(v) { this.setAttribute('matomo_env', v) }
 
+    get matomo_url() { return this.getAttribute('matomo_url') }
+    set matomo_url(v) { this.setAttribute('matomo_url', v) }
+
     get backgroundcolor() { return this.getAttribute('backgroundcolor') }
     set backgroundcolor(v) { this.setAttribute('backgroundcolor', v) }
 
@@ -571,15 +574,14 @@ button[download]::before{
         this.matomo_siteid = -1;
         return
       }
-      let na_host;
       if (!location.origin.includes('.test.')) {
-        na_host = 'https://newslabs-analytics.tools.bbc.co.uk';
+        this.matomo_url = 'https://newslabs-analytics.tools.bbc.co.uk';
         this.matomo_env = 'live';
       } else {
-        na_host = 'https://newslabs-analytics.test.tools.bbc.co.uk';
+        this.matomo_url = 'https://newslabs-analytics.test.tools.bbc.co.uk';
         this.matomo_env = 'test';
       }
-      const req_url = `${na_host}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
+      const req_url = `${this.matomo_url}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
       let retval;
       try {
         console.log(`fetch ${req_url}`);
