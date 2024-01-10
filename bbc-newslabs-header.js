@@ -152,6 +152,9 @@
 customElements.define(
   'bbc-newslabs-header',
   class extends HTMLElement {
+    cache = {
+      matomo_ready: false,
+    };
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
@@ -539,6 +542,8 @@ button[download]::before{
     get matomo_url() { return this.getAttribute('matomo_url') }
     set matomo_url(v) { this.setAttribute('matomo_url', v) }
 
+    get matomo_ready() { return this.cache.matomo_ready || false }
+
     get backgroundcolor() { return this.getAttribute('backgroundcolor') }
     set backgroundcolor(v) { this.setAttribute('backgroundcolor', v) }
 
@@ -639,12 +644,15 @@ button[download]::before{
       _paq.push(['setSiteId', this.matomo_siteid]);
       _paq.push(['setUserId', this.userinfo.replaceAll('\n', ' / ')]);
       let d = document,
-        g = d.createElement('script'),
-        s = d.getElementsByTagName('script')[0];
-      g.type = 'text/javascript';
-      g.async = true;
-      g.src = this.matomo_url + '/matomo.js';
-      s.parentNode.insertBefore(g, s);
+        s = d.createElement('script'),
+        s1 = d.getElementsByTagName('script')[0];
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = this.matomo_url + '/matomo.js';
+      s.addEventListener('load', e => {
+	this.cache.matomo_ready = true;
+      });
+      s1.parentNode.insertBefore(s, s1);
     }
   }
 )
