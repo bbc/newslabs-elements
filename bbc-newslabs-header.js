@@ -650,7 +650,7 @@ button[download]::before{
       s.async = true;
       s.src = this.matomo_url + '/matomo.js';
       s.addEventListener('load', e => {
-	this.cache.matomo_ready = true;
+        this.cache.matomo_ready = true;
       });
       s1.parentNode.insertBefore(s, s1);
     }
