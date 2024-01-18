@@ -63,7 +63,7 @@
       date = value; // assume a date object has been passed
     }
     const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
-    const interval = intervals.find(i => i.seconds < seconds);
+    const interval = intervals.find(i  i.seconds < seconds);
     let count = Math.floor(seconds / interval.seconds);
     if (count == Infinity) count = seconds;
     //console.log({seconds, interval, count});
@@ -453,6 +453,20 @@ button[download]::before{
       window.bbc.matomo = document.querySelector('bbc-newslabs-header');
     }
 
+    async getMatomoInfo() {
+      let waitCounter = 0;
+      while (this.matomo_siteid === null || this.matomo_url === null || this.userinfo === null) {
+        waitCounter++;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      return {
+        uslBase: this.matomo_url,
+        siteId: this.matomo_siteid,
+        userinfo: this.userinfo.replaceAll("\n", ", "),
+        waitCounter,
+      }
+    }
+
     _helpon() {
       if (this.help.length < 3) return
       const h = this.shadowRoot.getElementById('help')
@@ -479,7 +493,7 @@ button[download]::before{
         if (name == 'applink') {
           const app = this.shadowRoot.querySelector('#app')
           app.setAttribute('title', 'Open ' + newvalue)
-          app.addEventListener('click', evt => {
+          app.addEventListener('click', evt  {
             // support applink="${location.pathname}"
             let href = newvalue
             if (href.includes('${') && href.includes('}')) {
@@ -650,7 +664,7 @@ button[download]::before{
       s.type = 'text/javascript';
       s.async = true;
       s.src = this.matomo_url + '/matomo.js';
-      s.addEventListener('load', e => {
+      s.addEventListener('load', e  {
         this.cache.matomo_ready = true;
       });
       s1.parentNode.insertBefore(s, s1);
