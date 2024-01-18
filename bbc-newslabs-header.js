@@ -450,6 +450,7 @@ button[download]::before{
         this.shadowRoot.querySelector('div.outer').setAttribute('test', 'test');
       }
       document.title = `BBC ${this.app}`;
+      window.bbc.matomo = document.querySelector('bbc-newslabs-header');
     }
 
     _helpon() {
