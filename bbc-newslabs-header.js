@@ -460,9 +460,9 @@ button[download]::before{
         await new Promise(resolve => setTimeout(resolve, 100));
       }
       return {
-        uslBase: this.matomo_url,
+        urlBase: this.matomo_url,
         siteId: this.matomo_siteid,
-        userinfo: this.userinfo.replaceAll("\n", ", "),
+        userId: this.userinfo.replaceAll("\n", ", "),
         waitCounter,
       }
     }
