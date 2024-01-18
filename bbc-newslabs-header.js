@@ -63,7 +63,7 @@
       date = value; // assume a date object has been passed
     }
     const seconds = Math.max(1, Math.floor((Date.now() - date.getTime()) / 1000));
-    const interval = intervals.find(i  i.seconds < seconds);
+    const interval = intervals.find(i => i.seconds < seconds);
     let count = Math.floor(seconds / interval.seconds);
     if (count == Infinity) count = seconds;
     //console.log({seconds, interval, count});
