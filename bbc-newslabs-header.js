@@ -493,7 +493,7 @@ button[download]::before{
         if (name == 'applink') {
           const app = this.shadowRoot.querySelector('#app')
           app.setAttribute('title', 'Open ' + newvalue)
-          app.addEventListener('click', evt  {
+          app.addEventListener('click', evt => {
             // support applink="${location.pathname}"
             let href = newvalue
             if (href.includes('${') && href.includes('}')) {
@@ -664,7 +664,7 @@ button[download]::before{
       s.type = 'text/javascript';
       s.async = true;
       s.src = this.matomo_url + '/matomo.js';
-      s.addEventListener('load', e  {
+      s.addEventListener('load', e => {
         this.cache.matomo_ready = true;
       });
       s1.parentNode.insertBefore(s, s1);
