@@ -456,7 +456,7 @@ button[download]::before{
     async getMatomoInfo() {
       let waitCounter = 0;
       while (this.matomo_siteid === null || this.matomo_url === null || this.userinfo === null) {
-        waitCounter++;
+        waitCounter += 100;
         await new Promise(resolve => setTimeout(resolve, 100));
       }
       return {
