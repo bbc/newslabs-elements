@@ -559,6 +559,8 @@ button[download]::before{
 
     get matomo_ready() { return this.cache.matomo_ready || false }
 
+    get skipMatomo() { return this.hasAttribute('skipMatomo') }
+
     get backgroundcolor() { return this.getAttribute('backgroundcolor') }
     set backgroundcolor(v) { this.setAttribute('backgroundcolor', v) }
 
@@ -649,6 +651,10 @@ button[download]::before{
       if (document.querySelectorAll("script[src*='matomo.js']").length > 0) {
         const t = window?.Matomo?.getAsyncTracker(0);
         console.warn(`A Matomo tracker already exists or is in the process of construction!\n  ${t?.getTrackerUrl()}\n  ${t?.getUserId()}`);
+        return;
+      }
+      if (this.skipMatomo) {
+        console.info('Skip Matomo configuration as requested by the skipMatomo property in the <bbc-newslabs-header> tag.');
         return;
       }
       console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
