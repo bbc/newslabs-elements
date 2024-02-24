@@ -462,7 +462,7 @@ button[download]::before{
       return {
         urlBase: this.matomo_url,
         siteId: this.matomo_siteid,
-        userId: this.userinfo.replaceAll("\n", ", "),
+        userId: this.userinfo.replaceAll("\n", " / "),
         waitCounter,
       }
     }
