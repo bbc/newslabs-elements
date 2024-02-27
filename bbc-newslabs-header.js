@@ -301,10 +301,12 @@ button{
     margin-left: 1em;
     position: relative;
     top: -1px;
+    border: 1px solid silver;
 }
 button[onclick]:hover{
     background-color: whitesmoke;
     cursor: pointer;
+    border-color: var(--nl-red);
 }
 button[download]::before{
     content: "";
