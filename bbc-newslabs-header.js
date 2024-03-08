@@ -296,20 +296,22 @@ span.buttons{
 }
 button{
     background-color: white;
-    height: 1.7em;
-    display: inline-block;
-    line-height: 1.5em;
+    _height: 1.7em;
+    _display: inline-block;
+    _line-height: 1.5em;
     font-size: 12pt;
-    padding: 0 1ch;
-    margin-left: 1em;
-    position: relative;
-    top: -1px;
+    padding: 0 11px;
+    _margin-left: 1em;
+    _position: relative;
+    _top: -1px;
     border: 1px solid silver;
+    border-left: none;
 }
 button[onclick]:hover{
-    background-color: whitesmoke;
+    _background-color: whitesmoke;
     cursor: pointer;
-    border-color: var(--nl-red);
+    _border-color: var(--nl-red);
+    background: linear-gradient(0deg, var(--nl-red) 6px, transparent 0px);
 }
 button[download]::before{
     content: "";
