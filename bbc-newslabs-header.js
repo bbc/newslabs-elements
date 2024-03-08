@@ -224,6 +224,9 @@ div.outer[applink] #app:hover{
     font-size: 18px;
     font-weight: 400;
     overflow: hidden;
+    position: relative;
+    align-items: center;
+    display: flex;
 }
 #userinfo{
     font-size: 15px;
