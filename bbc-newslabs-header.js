@@ -219,7 +219,7 @@ div.outer[applink] #app:hover{
     cursor: pointer;
 }
 #subtitle{
-    padding: 0px 12px;
+    _padding: 0px 12px;
     flex-grow: 1;
     font-size: 18px;
     font-weight: 400;
@@ -296,22 +296,23 @@ span.buttons{
 }
 button{
     background-color: white;
-    _height: 1.7em;
-    _display: inline-block;
-    _line-height: 1.5em;
     font-size: 12pt;
     padding: 0 11px;
-    _margin-left: 1em;
-    _position: relative;
-    _top: -1px;
-    border: 1px solid silver;
-    border-left: none;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    border: none;
+    border-right: 1px solid silver;
 }
 button[onclick]:hover{
-    _background-color: whitesmoke;
     cursor: pointer;
-    _border-color: var(--nl-red);
-    background: linear-gradient(0deg, var(--nl-red) 6px, transparent 0px);
+    background: linear-gradient(0deg, var(--nl-red) 4px, transparent 0px);
+}
+button.right{
+    position: absolute;
+    right: 0px;
+    border-left: 1px solid silver;
+    border-right: none;
 }
 button[download]::before{
     content: "";
