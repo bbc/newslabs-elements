@@ -236,8 +236,13 @@ div.outer[applink] #app:hover{
         border-left: 1px solid silver;
     }
 
+    button:first-child {
+        border-left: none;
+    }
+
     button+button {
         margin-left: -8px;
+        border-left: none !important;
     }
 
     .right{
@@ -245,16 +250,13 @@ div.outer[applink] #app:hover{
         right: 0px;
         display: flex;
         gap: 8px;
-        border-left: 1px solid silver;
+        border-left: 1px solid silver !important;
         border-right: none;
 
         :last-child {
             border-right: none;
         }
     }
-}
-#subtitle.leftPad {
-    padding-left: 8px;
 }
 #userinfo{
     font-size: 15px;
@@ -562,7 +564,9 @@ button[download]::before{
           subtitle.childNodes.forEach((el, i) => {
             if (i == 0) {
               if (el.nodeType === Node.TEXT_NODE || el.tagName !== 'BUTTON') {
-                subtitle.classList.add('leftPad');
+                if (el?.data?.trim().length != 0) {
+                  subtitle.classList.add('leftPad');
+		}
               }
             } else {
               if (el?.previousSibling?.tagName !== 'BUTTON' && el.tagName === 'BUTTON') {
