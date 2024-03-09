@@ -219,14 +219,42 @@ div.outer[applink] #app:hover{
     cursor: pointer;
 }
 #subtitle{
-    _padding: 0px 12px;
     flex-grow: 1;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     overflow: hidden;
     position: relative;
     align-items: center;
     display: flex;
+    gap: 8px;
+
+    &.leftPad {
+        padding-left: 8px;
+    }
+
+    .leftBorder {
+        border-left: 1px solid silver;
+    }
+
+    button+button {
+        margin-left: -8px;
+    }
+
+    .right{
+        position: absolute;
+        right: 0px;
+        display: flex;
+        gap: 8px;
+        border-left: 1px solid silver;
+        border-right: none;
+
+        :last-child {
+            border-right: none;
+        }
+    }
+}
+#subtitle.leftPad {
+    padding-left: 8px;
 }
 #userinfo{
     font-size: 15px;
@@ -297,22 +325,17 @@ span.buttons{
 button{
     background-color: white;
     font-size: 12pt;
-    padding: 0 11px;
+    padding: 0 9px;
     height: 100%;
     align-items: center;
     display: flex;
     border: none;
     border-right: 1px solid silver;
+    color: inherit;
 }
 button[onclick]:hover{
     cursor: pointer;
     background: linear-gradient(0deg, var(--nl-red) 4px, transparent 0px);
-}
-button.right{
-    position: absolute;
-    right: 0px;
-    border-left: 1px solid silver;
-    border-right: none;
 }
 button[download]::before{
     content: "";
@@ -531,6 +554,23 @@ button[download]::before{
         if (name == 'userinfo') {
           this.shadowRoot.getElementById('userinfo').setAttribute('title', newvalue)
           this._enable_matomo()
+        }
+        if (name == 'subtitle') {
+          const subtitle = this.shadowRoot.getElementById(name)
+          subtitle.classList.remove('leftPad');
+          subtitle.childNodes.forEach((el, i) => {
+            if (i == 0) {
+              if (el.nodeType === Node.TEXT_NODE || el.tagName !== 'BUTTON') {
+                subtitle.classList.add('leftPad');
+              }
+            } else {
+              if (el?.previousSibling?.tagName !== 'BUTTON' && el.tagName === 'BUTTON') {
+                el.classList.add('leftBorder');
+              } else if (el.classList?.contains('right')) {
+                el.classList.add('leftBorder');
+              }
+            }
+          });
         }
       }
     }
