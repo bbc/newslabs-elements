@@ -230,6 +230,10 @@ div.outer[applink] #app:hover{
 
     &.leftPad {
         padding-left: 8px;
+
+        button:first-child {
+            border-left: 1px solid silver;
+        }
     }
 
     .leftBorder {
@@ -255,6 +259,10 @@ div.outer[applink] #app:hover{
 
         :last-child {
             border-right: none;
+        }
+
+        button:first-child {
+            border-left: none;
         }
     }
 }
