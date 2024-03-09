@@ -308,7 +308,7 @@ div.proto{
 }
 #help[active][text]{
     padding-top: 0px;
-    font-size: 18px;
+    font-size: 16px;
 }
 #help[active][text] svg{
     display: none;
