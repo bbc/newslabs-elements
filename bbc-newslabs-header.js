@@ -323,7 +323,7 @@ span.buttons{
     position: relative;
 }
 button{
-    background-color: white;
+    background-color: inherit;
     font-size: 12pt;
     padding: 0 9px;
     height: 100%;
