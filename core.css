@@ -97,12 +97,12 @@ body {
     padding: 0 1em;
     margin-bottom: 41px;
     
-    & [fullwidth] {
+    &[fullwidth] {
       padding-left: 0;
       padding-right: 0;
     }
 
-    & [show] {
+    &[show] {
       border: 1px dashed red;
     }
   }
