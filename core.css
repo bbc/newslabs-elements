@@ -91,17 +91,21 @@ select {
 
 /* NEWSLABS specifics */
 /* Putting your content inside <main></main> will make it avoid <bbc-newslabs-header> and <bbc-newslabs-footer> elements. */
-main{
+body {
+  > main {
     margin-top: 51px;
-    padding: 1em;
+    padding: 0 1em;
     margin-bottom: 41px;
-}
-main[fullwidth]{
-  padding-left: 0;
-  padding-right: 0;
-}
-main[show]{
-  border: 1px dashed red;
+    
+    & [fullwidth] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    & [show] {
+      border: 1px dashed red;
+    }
+  }
 }
 
 /* Import Reith fonts*/
