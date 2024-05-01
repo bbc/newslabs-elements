@@ -721,6 +721,8 @@ button[download]::before{
       console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
       let _paq = window._paq = window._paq || [];
       _paq.push(['trackPageView']);
+      _paq.push(['setCookieDomain', location.hostname]);
+      _paq.push(['setDomains', ['*.newslabs.co','*.bbc.co.uk']]);
       _paq.push(['enableLinkTracking']);
       _paq.push(['setTrackerUrl', this.matomo_url + '/matomo.php']);
       _paq.push(['setSiteId', this.matomo_siteid]);
