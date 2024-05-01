@@ -504,6 +504,7 @@ button[download]::before{
         urlBase: this.matomo_url,
         siteId: this.matomo_siteid,
         userId: this.userinfo.replaceAll("\n", " / "),
+        jsUrl: this.matomo_js_url,
         waitCounter,
       }
     }
@@ -665,6 +666,7 @@ button[download]::before{
         this.matomo_url = 'https://newslabs-analytics.test.tools.bbc.co.uk';
         this.matomo_env = 'test';
       }
+      this.matomo_js_url = (location.origin.includes('newslabs.co') ? `${location.origin}/matomo` : this.matomo_url) + '/matomo.js';
       const req_url = `${this.matomo_url}/matomo.php?newslabs.analytics&locationHref=${encodeURIComponent(location.href)}&documentTitle=${encodeURIComponent(this.app)}`;
       let retval;
       try {
@@ -719,9 +721,6 @@ button[download]::before{
         return;
       }
       console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
-
-      const matomo_js_origin = location.origin.includes('newslabs.co') ? `${location.origin}/matomo` : this.matomo_url;
-
       let _paq = window._paq = window._paq || [];
       _paq.push(['trackPageView']);
       _paq.push(['setCookieSameSite', 'Lax']);
@@ -736,7 +735,7 @@ button[download]::before{
         s1 = d.getElementsByTagName('script')[0];
       s.type = 'text/javascript';
       s.async = true;
-      s.src = matomo_js_origin + '/matomo.js';
+      s.src = this.matomo_js_url;
       s.addEventListener('load', e => {
         this.cache.matomo_ready = true;
       });
