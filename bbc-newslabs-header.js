@@ -719,6 +719,9 @@ button[download]::before{
         return;
       }
       console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
+
+      matomo_js_origin = location.origin.includes('newslabs.co') ? `${location.origin}/matomo` : this.matomo_url;
+
       let _paq = window._paq = window._paq || [];
       _paq.push(['trackPageView']);
       _paq.push(['setCookieSameSite', 'Lax']);
@@ -733,7 +736,7 @@ button[download]::before{
         s1 = d.getElementsByTagName('script')[0];
       s.type = 'text/javascript';
       s.async = true;
-      s.src = this.matomo_url + '/matomo.js';
+      s.src = matomo_js_origin + '/matomo.js';
       s.addEventListener('load', e => {
         this.cache.matomo_ready = true;
       });
