@@ -720,7 +720,7 @@ button[download]::before{
       }
       console.log(`Enabling Matomo at ${this.matomo_url} siteId:${this.matomo_siteid} userId:${this.userinfo}`)
 
-      matomo_js_origin = location.origin.includes('newslabs.co') ? `${location.origin}/matomo` : this.matomo_url;
+      const matomo_js_origin = location.origin.includes('newslabs.co') ? `${location.origin}/matomo` : this.matomo_url;
 
       let _paq = window._paq = window._paq || [];
       _paq.push(['trackPageView']);
