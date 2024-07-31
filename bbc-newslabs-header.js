@@ -1,5 +1,5 @@
 // add a new awaitModal method to the dialog element - makes it so much more useful!
-HTMLDialogElement?.prototype?.awaitModal = function() {
+HTMLDialogElement.prototype.awaitModal = function() {
     return new Promise(resolve => {
         this.showModal();
         this.addEventListener('close', () => resolve(this.returnValue), { once: true });
