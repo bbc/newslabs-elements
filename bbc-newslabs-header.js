@@ -2,7 +2,8 @@
 HTMLDialogElement.prototype.awaitModal = function() {
     return new Promise(resolve => {
         this.showModal();
-        this.addEventListener('close', () => resolve(this.returnValue), { once: true });
+        this.addEventListener('cancel', () => {this.returnValue = 'cancel'});    
+        this.addEventListener('close', () => {resolve(this.returnValue)}, { once: true });
     });
 };
 
